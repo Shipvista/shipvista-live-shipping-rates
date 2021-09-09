@@ -2,14 +2,13 @@
 
 /**
  * Plugin Name: Shipvista live shipping rates - BETA
+ * Plugin URI: https://github.com/Shipvista/shipvista-live-shipping-rates
  * Description: Display live shipping rates to customers on cart/checkout pages, print labels, and track orders with Shipvista's free live shipping rates plugin. Fully customizable to suit your every shipping needs. 
  * Author:  Shipvista
  * Author URI: http://www.shipvista.com
  * Version: 1.0.0
  * License: GNU General Public License (GPL) version 3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain: shipvista.com
- * Domain Path: https://www.shipvista.com
  * Tags: shipping, delivery, logistics, woocomemrce, free shipping, live rates, canada post, shipvista
  * Requires at least: 4.6
  * Tested up to: 5.8.1
