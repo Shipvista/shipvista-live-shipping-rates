@@ -307,7 +307,7 @@ trait WcShipvistaFunctions
   {
     $defaultRateOn = $this->get_option('shipvista_fallback_rate_on');
     $shippingPrice = $this->get_option('shipvista_fallback_rate') ?: 50;
-    if ($defaultRateOn == 'per_unit_quantity' && count($this->shippingList['list']) > 0) {
+    if ($defaultRateOn == 'per_unit_quantity' && is_array($this->shippingList['list']) && count($this->shippingList['list']) > 0) {
       // get total quantity
       $totalQuantity = $this->shippingList['totalQuantity'];
       $shippingPrice *= $totalQuantity;
