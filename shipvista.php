@@ -334,14 +334,14 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
   function enqueue()
   {
     global $post;
-    if (isset($_GET['section']) && $_GET['section'] == 'shipvista' || $post->post_type == 'shop_order') {
+    if (isset($_GET['section']) && $_GET['section'] == 'shipvista' || (isset( $post->post_type) && $post->post_type == 'shop_order')) {
       wp_enqueue_style('shipvista_plugin_styles', plugins_url('assets/css/shipvista_admin_style.css', __FILE__));
       wp_enqueue_style('shipvista_plugin_stylesw', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css');
       wp_enqueue_style('shipvista_plugin_styles_full', plugins_url('assets/css/shipvista_style.css', __FILE__));
       wp_enqueue_script('shipvista_plugin_scripts', 'https://code.jquery.com/jquery-3.5.1.min.js');
       wp_enqueue_script('shipvista_plugin_scripts2', plugins_url('assets/js/shipvista_admin_panel.js', __FILE__));
     }
-    if ($post->post_type == 'shop_order') {
+    if (isset( $post->post_type) && $post->post_type == 'shop_order') {
       wp_enqueue_style('shipvista_plugin_styles_front', plugins_url('assets/css/shipvista_style.css', __FILE__));
     }
   }
