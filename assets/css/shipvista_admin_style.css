@@ -1,0 +1,187 @@
+
+/**
+Error Bar
+**/
+#shipvista_alertBar, .shipvista_alertBar{
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: aliceblue;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 5;
+    left: 45%;
+    bottom: 40px;
+    font-size: 17px;
+}
+
+#shipvista_alertBar.show{
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation:  fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+#shipvista_footer {
+    background: #000;
+    padding: 0 0 30px 0;
+    color: #eee;
+    font-size: 14px;
+  }
+  
+  #shipvista_footer .shipvista_footer-top {
+    background: #111;
+    padding: 60px 0 30px 0;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-info {
+    margin-bottom: 30px;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-info h3 {
+    font-size: 34px;
+    margin: 0 0 20px 0;
+    padding: 2px 0 2px 10px;
+    line-height: 1;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    letter-spacing: 3px;
+    border-left: 4px solid #18d26e;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-info p {
+    font-size: 14px;
+    line-height: 24px;
+    margin-bottom: 0;
+    font-family: "Montserrat", sans-serif;
+    color: #eee;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .social-links a {
+    font-size: 18px;
+    display: inline-block;
+    background: #333;
+    color: #eee;
+    line-height: 1;
+    padding: 8px 0;
+    margin-right: 4px;
+    border-radius: 50%;
+    text-align: center;
+    width: 36px;
+    height: 36px;
+    transition: 0.3s;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .social-links a:hover {
+    background: #18d26e;
+    color: #fff;
+  }
+  
+  #shipvista_footer .shipvista_footer-top h4 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 12px;
+  }
+  
+  #shipvista_footer .shipvista_footer-top h4::before, #shipvista_footer .shipvista_footer-top h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+  }
+  
+  #shipvista_footer .shipvista_footer-top h4::before {
+    right: 0;
+    background: #555;
+  }
+  
+  #shipvista_footer .shipvista_footer-top h4::after {
+    background: #18d26e;
+    width: 60px;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-links {
+    margin-bottom: 30px;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-links ul i {
+    padding-right: 8px;
+    color: #ddd;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-links ul li {
+    border-bottom: 1px solid #333;
+    padding: 10px 0;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-links ul li:first-child {
+    padding-top: 0;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-links ul a {
+    color: #eee;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-links ul a:hover {
+    color: #18d26e;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-contact {
+    margin-bottom: 30px;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-contact p {
+    line-height: 26px;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-newsletter {
+    margin-bottom: 30px;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-newsletter input[type="email"] {
+    border: 0;
+    padding: 6px 8px;
+    width: 65%;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-newsletter input[type="submit"] {
+    background: #18d26e;
+    border: 0;
+    width: 35%;
+    padding: 6px 0;
+    text-align: center;
+    color: #fff;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+  
+  #shipvista_footer .shipvista_footer-top .shipvista_footer-newsletter input[type="submit"]:hover {
+    background: #13a456;
+  }
+  
+  #shipvista_footer .copyright {
+    text-align: center;
+    padding-top: 30px;
+  }
+  
+  #shipvista_footer .credits {
+    text-align: center;
+    font-size: 13px;
+    color: #ddd;
+  }
+  
