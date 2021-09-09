@@ -1,0 +1,2 @@
+# shipvista-live-shipping-rates
+Shipvista live shipping rates is free a WordPress - WooCommerce extension that helps you completely automate Canada Post shipping by displaying real-time rates in cart/checkout page. Using this plugin requires you to create a shipvista.com account. Creating an account is free and your account will be connected to this plugin in order for you to be able to get live shipping rates.  The current beta version only supports the carrier Canada Post. More carriers will be added in subsequent release.
