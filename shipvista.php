@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Shipvista live shipping rates - BETA
+ * Plugin Name: Shipvista live shipping rates
  * Plugin URI: https://github.com/Shipvista/shipvista-live-shipping-rates
  * Description: Display live shipping rates to customers on cart/checkout pages, print labels, and track orders with Shipvista's free live shipping rates plugin. Fully customizable to suit your every shipping needs. 
  * Author:  Shipvista
@@ -18,9 +18,9 @@
  */
 
 
-use Shipvista\Forms\WcShipvistaForms;
-use Shipvista\Functions\WcShipvistaFunctions;
-use Shipvista\Rates\WcShipvistaRates;
+use Shipvista\Forms\SLSR_WcShipvistaForms;
+use Shipvista\Functions\SLSR_WcShipvistaFunctions;
+use Shipvista\Rates\SLSR_WcShipvistaRates;
 
 defined('ABSPATH') or die('WORDPRESS ERROR');
 define('SHIPVISTA__PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -41,7 +41,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
   require_once SHIPVISTA__PLUGIN_DIR . 'inc/wc_shipvista_shipping_rates.php';
   require_once SHIPVISTA__PLUGIN_DIR . 'inc/wc_shipvista_functions.php';
 
-  function shipvista()
+  function SLSR_Shipvista()
   {
 
 
@@ -49,13 +49,13 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
       require_once SHIPVISTA__PLUGIN_DIR . 'inc/wc_shipvista_actions.php';
     }
 
-    if (!class_exists('shipvista')) {
+    if (!class_exists('SLSR_Shipvista')) {
 
-      class shipvista extends WC_Shipping_Method
+      class SLSR_Shipvista extends WC_Shipping_Method
       {
-        use WcShipvistaFunctions;
-        use WcShipvistaForms;
-        use WcShipvistaRates;
+        use SLSR_WcShipvistaFunctions;
+        use SLSR_WcShipvistaForms;
+        use  SLSR_WcShipvistaRates;
         public function __construct()
         {
           global $woocommerce;
@@ -107,7 +107,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         {
           require_once SHIPVISTA__PLUGIN_DIR . '/inc/wc_shipvista_bootstrap.php';
           $this->pluginLink =  menu_page_url(SHIPVISTA__PLUGIN_SLUG, false) . '&tab=shipping&section=shipvista';
-          new WcShipvistaBootstrap();
+          new SLSR_WcShipvistaBootstrap();
         }
 
 
@@ -186,7 +186,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             continue;
           }
 
-          $Shipvista = new shipvista();
+          $Shipvista = new SLSR_Shipvista();
           $rates = $Shipvista->calculate_shipping($package);
         }
       }
@@ -203,8 +203,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
       $carrierId =  (int) @$_POST['shipvista_shipping_carrier'] ?: '';
 
       $carrierOptions = (array) @json_decode(stripslashes($_POST['shipvista_shipping_options']), true) ?: [['code' => 'DC']];
-      shipvista();
-      $Shipvista = new shipvista();
+      SLSR_Shipvista();
+      $Shipvista = new SLSR_Shipvista();
 
       $response = ['status' => 0, 'message' => ''];
       if (strlen($code) > 2 && $orderId > 0) {
@@ -334,13 +334,13 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
   function enqueue()
   {
     global $post;
-    if (isset($_GET['section']) && $_GET['section'] == 'shipvista' || (isset( $post->post_type) && $post->post_type == 'shop_order')) {
+    if (isset($_GET['section']) && $_GET['section'] == 'shipvista' || (isset($post->post_type) && $post->post_type == 'shop_order')) {
       wp_enqueue_style('shipvista_plugin_styles', plugins_url('assets/css/shipvista_admin_style.css', __FILE__));
       wp_enqueue_style('shipvista_plugin_stylesw', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css');
       wp_enqueue_style('shipvista_plugin_styles_full', plugins_url('assets/css/shipvista_style.css', __FILE__));
       wp_enqueue_script('shipvista_plugin_scripts2', plugins_url('assets/js/shipvista_admin_panel.js', __FILE__));
     }
-    if (isset( $post->post_type) && $post->post_type == 'shop_order') {
+    if (isset($post->post_type) && $post->post_type == 'shop_order') {
       wp_enqueue_style('shipvista_plugin_styles_front', plugins_url('assets/css/shipvista_style.css', __FILE__));
     }
   }
@@ -360,7 +360,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
           var loaderContainer = `
 		<div class="sv_LoaderWrap">
 			<div class="sv_LoaderCont">
-			<img src="<?php echo SHIPVISTA__PLUGIN_URL; ?>assets/img/loader.gif" class="sv_loaderImg">
+			<img src="<?php echo  esc_attr(SHIPVISTA__PLUGIN_URL); ?>assets/img/loader.gif" class="sv_loaderImg">
 			</div>
 		</div>
 		`;
@@ -380,13 +380,13 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     global $post;
     if (is_object($post) && $post->post_type == 'page') {
       if ($post->post_name == 'checkout') {
-        shipvista();
-        $ship = new shipvista;
-        if ($ship->get_option('shipvista_google_places_api') == 'yes') { ?>
+        SLSR_Shipvista();
+        $ship = new SLSR_Shipvista;
+        if ($ship->get_option('shipvista_google_places_api') == 'yes' && strlen($ship->get_option('shipvista_google_places_api_key')) > 10) { ?>
 
 
 
-          <script async src="https://maps.googleapis.com/maps/api/js?key=<?php echo $ship->get_option('shipvista_google_places_api_key'); ?>&libraries=places&callback=initMap">
+          <script async src="https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr($ship->get_option('shipvista_google_places_api_key')); ?>&libraries=places&callback=initMap">
           </script>
 
           <script>
@@ -534,8 +534,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         'country' => $country,
       ];
 
-      shipvista();
-      $s = new shipvista();
+      SLSR_Shipvista();
+      $s = new SLSR_Shipvista();
 
       $rates = $s->getShippingRates(['destination' => $destinationAddress]);
 
@@ -566,8 +566,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
       $user = $order->get_user();
       $shipping = $order->get_shipping_method();
       try {
-        shipvista();
-        $s = new shipvista();
+        SLSR_Shipvista();
+        $s = new SLSR_Shipvista();
 
         $package = [
           'destination' => $s->orderShippingAddress($order),
@@ -576,18 +576,18 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
         $rates = $s->getShippingRates($package, true);
         $s->orderId = $orderId;
-        echo  $s->structOrderFieldList($rates, $shipping);
+        echo  esc_html($s->structOrderFieldList($rates, $shipping));
 
         update_user_option($user->ID, "meta-box-order_page", $order, true);
         update_user_option($user->ID, "meta-box-order_post", $order, true);
       } catch (Exception $e) {
-        echo 'Could not obtain order infomation.';
+        echo esc_html('Could not obtain order infomation.');
       }
     } else {
-      echo 'Could not obtain order infomation.';
+      echo  esc_html('Could not obtain order infomation.');
     }
 
-    echo '<p>You can log in to your Shipvista account to manage your orders, print labels, and track every step of the process.</p> <a href="https://shipvista.com/CreateShipment" target="_blank" class="sv_btn sv_btn-primary sv_btn-sm" >Create Label</a>';
+    echo  esc_html('<p>You can log in to your Shipvista account to manage your orders, print labels, and track every step of the process.</p> <a href="https://shipvista.com/CreateShipment" target="_blank" class="sv_btn sv_btn-primary sv_btn-sm" >Create Label</a>');
   }
   function shipvista_add_meta_box()
   {
@@ -639,50 +639,49 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         $mail = wp_mail($email, $subject, $html_message, $headers);
 
         if ($mail) {
-          add_action('admin_notices',  'feedback_success');
+          add_action('admin_notices',  'SLSR_feedback_success');
         } else {
-          add_action('admin_notices',  'feedback_fail');
+          add_action('admin_notices',  'SLSR_feedback_fail');
         }
         return false;
       } else {
-        add_action('admin_notices',  'feedback_error');
+        add_action('admin_notices',  'SLSR_feedback_error');
         return false;
       }
     }
   }
 
-  function feedback_success()
+  function SLSR_feedback_success()
   {
     ?>
     <div class="notice notice-success is-dismissible">
-      <p><?php _e('Thanks for sending us your feedback', 'sample-text-domain'); ?></p>
+      <p><?php _e('Thanks for sending us your feedback', 'shipvista-feedback-success'); ?></p>
     </div>
-<?php
+  <?php
   }
 
-  function feedback_error()
+  function SLSR_feedback_error()
   {
     $class = 'notice notice-error';
-    $message = __('Please enter a valid feedback of at least 4 characters.', 'sample-text-domain');
+    $message = __('Please enter a valid feedback of at least 4 characters.', 'shipvista-feedback-success');
 
     printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
   }
 
 
-  function feedback_fail()
+  function SLSR_feedback_fail()
   {
     $class = 'notice notice-error';
-    $message = __('Could not send your feedback. Please check to make sure your emailing system is working properly.', 'sample-text-domain');
+    $message = __('Could not send your feedback. Please check to make sure your emailing system is working properly.', 'shipvista-feedback-success');
 
     printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
   }
 
 
 
-  $wppstp1_version = '0.1.8';
+  $wppstp1_version = '1.0.0';
 
-
-  add_action('upgrader_process_complete', 'shipvista_update', 10, 2); // will working only this plugin activated.
+  add_action('upgrader_process_complete', 'shipvista_update', 10, 2); // will work only this plugin activated.
   function shipvista_update(\WP_Upgrader $upgrader_object, $hook_extra)
   {
     global $wppstp1_version;
@@ -697,7 +696,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
           if ($each_plugin == $this_plugin) {
             // if this plugin is in the updated plugins.
             // don't process anything from new version of code here, because it will work on old version of the plugin.
-            file_put_contents(SHIPVISTA__PLUGIN_DIR . '/assets/backup/test.txt', 'v' . $wppstp1_version . "\r\n", FILE_APPEND); // you will always get the previous version even you update to the new version.
             // set transient to let it run later.
             set_transient('shipvista_updated', 1);
           }
@@ -715,7 +713,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
     if (get_transient('shipvista_updated') && current_user_can('manage_options')) {
       // if plugin updated and current user is admin.
-      file_put_contents(SHIPVISTA__PLUGIN_DIR . '/assets/backup/test-update-by-transient.txt', 'v' . SHIPVISTA__PLUGIN_VERSION . "\r\n", FILE_APPEND); // you will always get the updated version here.
       // update code here.
 
       // delete transient.

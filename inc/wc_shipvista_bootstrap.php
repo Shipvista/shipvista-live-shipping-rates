@@ -1,9 +1,9 @@
 <?php
 require_once SHIPVISTA__PLUGIN_DIR . '/inc/wc_shipvista_render.php';
 
-class WcShipvistaBootstrap extends shipvista
+class SLSR_WcShipvistaBootstrap extends SLSR_Shipvista
 {
-    use shipvistaRenderPage;
+    use SLSR_shipvistaRenderPage;
     private $parentObject;
     public $content = ['Errors' => ''];
     public $activePage = 'home';
@@ -15,7 +15,7 @@ class WcShipvistaBootstrap extends shipvista
         parent::__construct();
         $this->pageLink = menu_page_url(SHIPVISTA__PLUGIN_SLUG, false) . '&tab=shipping&section=shipvista';
 
-        $request = @$_GET['wcs_page'] ?: 'connect';
+        $request = isset($_GET['wcs_page']) ? sanitize_text_field($_GET['wcs_page']) : 'connect';
         // check method 
         $this->userApiToken = $this->get_option('shipvista_api_token');
 
@@ -48,10 +48,10 @@ class WcShipvistaBootstrap extends shipvista
         $userToken = $this->get_option('shipvista_api_token');
         $this->form_fields = $this->sv_connectForm();
         $this->content['signup_verify']  = false;
-        $this->content['signup_email'] = @$_COOKIE['shipvista_user_email'] ?: '';
-        $this->content['signup_names'] = @$_COOKIE['shipvista_user_names'] ?: '';
+        $this->content['signup_email'] = isset($_COOKIE['shipvista_user_email']) ? sanitize_email($_COOKIE['shipvista_user_email']) : '';
+        $this->content['signup_names'] = isset($_COOKIE['shipvista_user_names']) ? sanitize_text_field($_COOKIE['shipvista_user_names']) : '';
         if (strlen($this->content['signup_email']) > 3 && isset($_GET['signup']) && substr($_GET['signup'], 0, 4) == 'true') {
-            $token = explode('=', $_GET['signup'])[1];
+            $token = explode('=', sanitize_text_field($_GET['signup']))[1];
             $verify = $this->shipvistaApi('/register/verifyemailaddress', ['token' => $token], 'GET');
             if ($verify['status'] == true) {
                 $this->content['signup_verify']  = true;
@@ -143,8 +143,8 @@ class WcShipvistaBootstrap extends shipvista
     public function settings()
     {
         // get tap
-        $this->settingTabs = isset($_GET['wcs_setting']) ? $_GET['wcs_setting'] : 'basic';
-        $this->content['Form'] = ''; 
+        $this->settingTabs = isset($_GET['wcs_setting']) ? sanitize_text_field($_GET['wcs_setting']) : 'basic';
+        $this->content['Form'] = '';
         $this->render('settings.php');
     }
 }

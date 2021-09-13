@@ -466,6 +466,20 @@
                         </td>
                     </tr>
 
+                    
+                    <tr class="">
+                        <td>
+                            Enable API Logs <br>
+                            <small>Turn this option on to log every request made by this plugin to shipvista. Logs are found in the plugin directory */assets/logs </small>
+                        </td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" <?php echo ($this->get_option('shipvista_log_satus') == 'yes' ? 'checked' : '') ?> class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_log_satus" name="<?php echo $this->fieldPrepend ?>shipvista_log_satus">
+                                <label class="custom-control-label" for="<?php echo $this->fieldPrepend ?>shipvista_log_satus"></label>
+                            </div>
+                        </td>
+                    </tr>
+
                 </tbody>
 
                 <tfoot>
