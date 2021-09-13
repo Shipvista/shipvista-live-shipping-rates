@@ -338,7 +338,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
       wp_enqueue_style('shipvista_plugin_styles', plugins_url('assets/css/shipvista_admin_style.css', __FILE__));
       wp_enqueue_style('shipvista_plugin_stylesw', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css');
       wp_enqueue_style('shipvista_plugin_styles_full', plugins_url('assets/css/shipvista_style.css', __FILE__));
-      wp_enqueue_script('shipvista_plugin_scripts', 'https://code.jquery.com/jquery-3.5.1.min.js');
       wp_enqueue_script('shipvista_plugin_scripts2', plugins_url('assets/js/shipvista_admin_panel.js', __FILE__));
     }
     if (isset( $post->post_type) && $post->post_type == 'shop_order') {
