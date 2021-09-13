@@ -18,19 +18,19 @@
 
             <div class="sv_col-12 sv_col-md-5 sv_border-right sv_mb-3 sv_mb-md-0">
                 <ul class="sv_list-unstyled">
-                    <li>♦ <b>Ship instantly</b>  <small>Access to a free online system used to process shipments instantly.</small></li>
-                    <li>♦ <b>Shipping label</b>  <small>Generate carrier approved BOL and AWB shipping labels.</small></li>
-                    <li>♦ <b>LTL shipments</b>  <small>Schedule LTL shipments from anywhere to anywhere in North America including Trans-Border.</small></li>
-                    <li>♦ <b>Shipment Tracking</b>  <small>Claims processing and statement of account with invoice details.</small></li>
-                    <li>♦ <b>Real time</b>  <small>Real time, user friendly access to very competitive LTL and courier rates.</small></li>
-                    <li>♦ <b>Save time and money</b>  <small>Save your business time and money. Fast and efficient process.</small></li>
+                    <li>♦ <b>Ship instantly</b> <small>Access to a free online system used to process shipments instantly.</small></li>
+                    <li>♦ <b>Shipping label</b> <small>Generate carrier approved BOL and AWB shipping labels.</small></li>
+                    <li>♦ <b>LTL shipments</b> <small>Schedule LTL shipments from anywhere to anywhere in North America including Trans-Border.</small></li>
+                    <li>♦ <b>Shipment Tracking</b> <small>Claims processing and statement of account with invoice details.</small></li>
+                    <li>♦ <b>Real time</b> <small>Real time, user friendly access to very competitive LTL and courier rates.</small></li>
+                    <li>♦ <b>Save time and money</b> <small>Save your business time and money. Fast and efficient process.</small></li>
                 </ul>
             </div>
 
 
             <div class="sv_col-12 sv_col-md-3  sv_mb-3 sv_mb-md-0 sv_d-none sv_d-mb-block sv_d-lg-block">
-            <ul class="sv_list-unstyled ">
-                <li>Quick Links</li>
+                <ul class="sv_list-unstyled ">
+                    <li>Quick Links</li>
                     <li>♦ <b><a target="_blank" href="https://shipvista.com/about">About Us</a></b></small></li>
                     <li>♦ <b><a target="_blank" href="https://shipvista.com/open-account-offer">Bonus Offers</a></b></small></li>
                     <li>♦ <b><a target="_blank" href="https://shipvista.com/trackmyshipment">Track Shipment</a></b></small></li>
@@ -83,4 +83,3 @@
 
                 <!-- body content -->
                 <div class="sv_col-12 sv_col-md-9 sv_col-lg-10 sv_py-4" style="background: #f8f9fa !important">
-

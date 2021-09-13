@@ -20,7 +20,7 @@ function _id(id) {
  * Get form parts from wordpress input fields
  */
 function getInput(id) {
-    return $('#' + idAppend + id).val();
+    return _id(idAppend + id).value;
 }
 
 /**
@@ -33,8 +33,8 @@ function inputError(id, msg) {
         if (id) {
             var input = idAppend + id;
             scrollToInput(input);
-            $('#' + input).addClass('is-invalid');
-            $('#' + input).removeClass('mb-3');
+            jQuery('#' + input).addClass('is-invalid');
+            jQuery('#' + input).removeClass('mb-3');
 
             // check for error container
             var parent = _id(input).parentElement;
@@ -46,12 +46,12 @@ function inputError(id, msg) {
                 span.setAttribute('class', 'text-danger mb-3');
                 parent.appendChild(span);
             }
-            $('#' + errorId).html(msg)
+            jQuery('#' + errorId).html(msg)
             // remove error from page after view
             setTimeout(() => {
-                $('#' + input).removeClass('is-invalid');
-                $('#' + input).addClass('mb-3');
-                $('#' + errorId).html('')
+                jQuery('#' + input).removeClass('is-invalid');
+                jQuery('#' + input).addClass('mb-3');
+                jQuery('#' + errorId).html('')
             }, 5000);
         } else {
             alertBar('alert');
@@ -71,16 +71,16 @@ function alertBar(msg, cls) {
 
     var errorBar = _id('shipvista_alertBar');
     if (errorBar == undefined) {
-        $('body').append(sv_alertBar);
+        jQuery('body').append(sv_alertBar);
     }
     // add snackbar class
-    $('#shipvista_alertBar').addClass(cls);
+    jQuery('#shipvista_alertBar').addClass(cls);
     // dispaly alert bar
 
-    $('#shipvista_alertBar').addClass('show');
-    $('#shipvista_alertBar_content').html(msg);
+    jQuery('#shipvista_alertBar').addClass('show');
+    jQuery('#shipvista_alertBar_content').html(msg);
     setTimeout(() => {
-        $('#shipvista_alertBar').attr('class', " ");
+        jQuery('#shipvista_alertBar').attr('class', " ");
     }, 5000);
 
 }
@@ -111,7 +111,7 @@ function svApiCall(content, endPoint, meth, callback) {
         message: ''
     };
     // if (Object.keys(content).length > 0) {
-    $.ajax({
+    jQuery.ajax({
         url: endPoint,
         type: meth,
         data: JSON.stringify(content),
@@ -174,13 +174,13 @@ function shipvista_ConnectStore(callback = false) {
         if (result.status == true) {
             alertBar('Login successfull', 'bg-success');
             // set form data
-            $('#' + idAppend + 'shipvista_api_token').val(result.access_token.tokenString);
-            $('#' + idAppend + 'shipvista_refresh_token').val(result.refresh_token.tokenString);
-            $('#' + idAppend + 'shipvista_token_expires').val(result.access_token.expireAt);
-            $('#' + idAppend + 'shipvista_user_avatar').val(result.avatar);
-            $('#' + idAppend + 'shipvista_user_balance').val(0);
-            $('#' + idAppend + 'shipvista_user_name').val(result.refresh_token.username);
-            $('#' + idAppend + 'shipvista_user_currency').val('USD');
+            jQuery('#' + idAppend + 'shipvista_api_token').val(result.access_token.tokenString);
+            jQuery('#' + idAppend + 'shipvista_refresh_token').val(result.refresh_token.tokenString);
+            jQuery('#' + idAppend + 'shipvista_token_expires').val(result.access_token.expireAt);
+            jQuery('#' + idAppend + 'shipvista_user_avatar').val(result.avatar);
+            jQuery('#' + idAppend + 'shipvista_user_balance').val(0);
+            jQuery('#' + idAppend + 'shipvista_user_name').val(result.refresh_token.username);
+            jQuery('#' + idAppend + 'shipvista_user_currency').val('USD');
             // set form data
             sv_WooSave();
         } else {
@@ -326,7 +326,7 @@ function svToggleClass(id, toggle) {
         if (!toggle) {
             toggle = 'd-none'
         }
-        $('#' + id).toggleClass(toggle);
+        jQuery('#' + id).toggleClass(toggle);
     }
 }
 
@@ -335,7 +335,7 @@ function svToggleClass(id, toggle) {
 var isMore = false;
 
 function shipvistaToggleViewMoreList() {
-    // $('.shipvista_list_hide').toggleClass('sv_d-none');
+    // jQuery('.shipvista_list_hide').toggleClass('sv_d-none');
     var ell = document.getElementsByClassName('shipvista_list_hide');
     for (let index = 0; index < ell.length; index++) {
         const element = ell[index];
@@ -360,8 +360,8 @@ function shipvistaSubmitlabelCreate() {
 
 
 function toggleAccountCreate() {
-    $('#_setupAccount').toggleClass('d-none');
-    $('#_createAccount').toggleClass('d-none');
+    jQuery('#_setupAccount').toggleClass('d-none');
+    jQuery('#_createAccount').toggleClass('d-none');
 }
 
 function createShipvistaUserAccount(callback = false) {
@@ -370,10 +370,10 @@ function createShipvistaUserAccount(callback = false) {
         if (callback.status == true) {
             alertBar(callback.message, 'bg-success');
             setCookie('shipvista_user_pending_auth', '', 1);
-            $('#_signupCont').toggleClass('d-none');
-            $('#_verifyCont').toggleClass('d-none');
-            $('#_verifyEmail').html(getCookie('shipvista_user_email'));
-            $('#_verifyName').html(getCookie('shipvista_user_names'));
+            jQuery('#_signupCont').toggleClass('d-none');
+            jQuery('#_verifyCont').toggleClass('d-none');
+            jQuery('#_verifyEmail').html(getCookie('shipvista_user_email'));
+            jQuery('#_verifyName').html(getCookie('shipvista_user_names'));
         } else {
             alertBar(callback.message, 'bg-danger');
             setCookie('shipvista_user_email', '', -1);

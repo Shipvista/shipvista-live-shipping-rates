@@ -59,7 +59,6 @@ trait SLSR_WcShipvistaRates
 
                 $shippingList = [];
                 $rateResults = [];
-
                 if (!$session) {
                     $rateResults =  $this->shipvistaApi('/rate/', $apiObject);
                 } else {
@@ -75,7 +74,7 @@ trait SLSR_WcShipvistaRates
                             WC()->session->set("sv_session_time", time());
                             WC()->session->set("sv_session_response", json_encode($rateResults));
                         } catch (Exception $e) {
-                            $this->pluginLogs('sessions', 'Could not create sessions :: ' . $e->getMessage());
+                            $this->SLSR_pluginLogs('sessions', 'Could not create sessions :: ' . $e->getMessage());
                         }
                     }
 
@@ -102,17 +101,18 @@ trait SLSR_WcShipvistaRates
     function checkSessionThrottle(array $request)
     {
 
-        $reqeustString = json_encode($request);
+        $requestString = json_encode($request);
         // cehck if session isset
         $return = false;
         $session = WC()->session->get("sv_session_request");
-        if ($session) {
+        if ($session && $session == $requestString) {
             $sessionTime = WC()->session->get("sv_session_time");
             $sessionTime = (int) $sessionTime;
             $timeNow = time();
             // check if its been a minute
             $minute = round(abs($timeNow - $sessionTime) / 60, 2);
-            $this->timmer = $minute . ' == ' . date('h:i:sa', strtotime($sessionTime)) . ' -- ' . date('h:i:sa', $timeNow);
+            $timeCheck = $minute . ' == ' . date('h:i:sa', strtotime($sessionTime)) . ' -- ' . date('h:i:sa', $timeNow);
+            $this->SLSR_pluginLogs("timer", $timeCheck);
             if ($minute < 0.5) {
                 // get the stored response
                 $storeResponse = WC()->session->get("sv_session_response");
@@ -343,15 +343,15 @@ trait SLSR_WcShipvistaRates
                     $this->getRateRanking($shippingList);
                     return $shippingList;
                 } else {
-                    $this->pluginLogs('Rates', ' Rates gotten successfully but does not match specification in settings, fall back rate loaded');
+                    $this->SLSR_pluginLogs('Rates', ' Rates gotten successfully but does not match specification in settings, fall back rate loaded');
                     return $this->getDefaultRates();
                 }
             } else {
-                $this->pluginLogs('Rates', ' Could not get rates, fall back rate loaded');
+                $this->SLSR_pluginLogs('Rates', ' Could not get rates, fall back rate loaded');
                 return $this->getDefaultRates();
             }
         } else {
-            $this->pluginLogs('Rates', ' Invalid rate object, fall back rate loaded');
+            $this->SLSR_pluginLogs('Rates', ' Invalid rate object, fall back rate loaded');
             return $this->getDefaultRates();
         }
     }

@@ -478,9 +478,9 @@ var change = setInterval(()=>{
 			} catch(e){}
 	}
 	
-	if(currentPage == 'cart' && !document.getElementById("sv_calculateBtnToggle") ){
+	if(!document.getElementById("sv_calculateBtnToggle") ){
 		if(!document.getElementsByClassName('sv_list-group').length){
-			if(!document.getElementById("sv_loaderId") ){
+			if(!document.getElementById("sv_loaderId") && document.getElementsByClassName('woocommerce-shipping-methods')[0]){
 				isEventSet = false;
 				var loader = document.createElement('div');
 				loader.innerHTML = loaderContainer;

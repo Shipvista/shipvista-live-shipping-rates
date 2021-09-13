@@ -252,7 +252,7 @@ trait SLSR_WcShipvistaForms
     public function sv_basicForm()
     {
         return array(
-            'shipvista_log_satus' => array(
+            'shipvista_log_status' => array(
                 'title' => __('Enable plugin logs to use for debugging.', 'shipvista'),
                 'type'        => 'checkbox',
                 'class' => 'form-control mb-3 form-control-sm',

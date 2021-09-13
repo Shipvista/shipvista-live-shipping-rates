@@ -9,11 +9,12 @@
 
 
 
-                        <!-- include settings forms -->
-                        <div class="sv_d-none">
-                            <?php echo esc_html($this->requiredForms); ?>
-                        </div>
-                        <!-- include settings forms -->
+    <!-- include settings forms -->
+    <div class="sv_d-none">
+        <?php echo print_r($this->requiredForms); // insert html form elements hidden in view 
+        ?>
+    </div>
+    <!-- include settings forms -->
 
     <!-- add action link script -->
     <script>
@@ -59,9 +60,9 @@
                             </p>
 
                             <div class="social-links">
-                                <a href="https://www.facebook.com/shipvista" target="_blank" class="facebook" title="Facebook"><img src="<?php echo  esc_attr(SHIPVISTA__PLUGIN_URL . '/assets/img/facebook.png'); ?>"  style="height: 35px;margin-top:-8px" class="sv_rounded-circle"></a>
-                                <a href="https://twitter.com/shipvista" target="_blank" class="twitter" title="Twitter"><img src="<?php echo  esc_attr(SHIPVISTA__PLUGIN_URL . '/assets/img/twitter.png'); ?>"  style="height: 35px;margin-top:-8px" class="sv_rounded-circle"></a>
-                                <a href="https://www.instagram.com/shipvista/" target="_blank" class="instagram" title="Instagram"><img src="<?php echo  esc_attr(SHIPVISTA__PLUGIN_URL . '/assets/img/instagram.png') ?>"  style="height: 35px;margin-top:-8px" class="sv_rounded-circle"></a>
+                                <a href="https://www.facebook.com/shipvista" target="_blank" class="facebook" title="Facebook"><img src="<?php echo  esc_attr(SHIPVISTA__PLUGIN_URL . '/assets/img/facebook.png'); ?>" style="height: 35px;margin-top:-8px" class="sv_rounded-circle"></a>
+                                <a href="https://twitter.com/shipvista" target="_blank" class="twitter" title="Twitter"><img src="<?php echo  esc_attr(SHIPVISTA__PLUGIN_URL . '/assets/img/twitter.png'); ?>" style="height: 35px;margin-top:-8px" class="sv_rounded-circle"></a>
+                                <a href="https://www.instagram.com/shipvista/" target="_blank" class="instagram" title="Instagram"><img src="<?php echo  esc_attr(SHIPVISTA__PLUGIN_URL . '/assets/img/instagram.png') ?>" style="height: 35px;margin-top:-8px" class="sv_rounded-circle"></a>
 
                                 <a href="https://www.linkedin.com/company/shipvista-com" target="_blank" class="linkedin" title="Linkedin"><img src="<?php echo  esc_attr(SHIPVISTA__PLUGIN_URL . '/assets/img/linkedin.png'); ?>" style="height: 35px;margin-top:-8px" class="sv_rounded-circle"></a>
 

@@ -3,7 +3,7 @@
 /**
  * 
  */
-trait shipvistaRenderPage
+trait SLSR_ShipvistaRenderPage
 {
     public $header = SHIPVISTA__PLUGIN_DIR . '/templates/navigation/header.php';
     public $footer = SHIPVISTA__PLUGIN_DIR . '/templates/navigation/footer.php';

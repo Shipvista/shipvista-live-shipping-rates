@@ -3,7 +3,7 @@ require_once SHIPVISTA__PLUGIN_DIR . '/inc/wc_shipvista_render.php';
 
 class SLSR_WcShipvistaBootstrap extends SLSR_Shipvista
 {
-    use SLSR_shipvistaRenderPage;
+    use SLSR_ShipvistaRenderPage;
     private $parentObject;
     public $content = ['Errors' => ''];
     public $activePage = 'home';

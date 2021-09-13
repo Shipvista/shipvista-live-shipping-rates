@@ -28,7 +28,7 @@ trait SLSR_WcShipvistaFunctions
       $file = str_replace(SHIPVISTA__PLUGIN_DIR, SHIPVISTA__PLUGIN_URL, $file);
       return $file;
     } catch (Exception $e) {
-      $this->pluginLogs('labels', $e->getMessage());
+      $this->SLSR_pluginLogs('labels', $e->getMessage());
       return false;
     }
   }
@@ -165,7 +165,7 @@ trait SLSR_WcShipvistaFunctions
     $label = (string) wc_get_order_item_meta($this->orderId, 'shipvista_shipment_label') ?: '';
     if (strlen($label) > 3) {
       $byteFile = $this->shipvistaApi("/Shipments/GetLabel", ['fileName' => $label], 'GET');
-      $this->pluginLogs('byte', json_encode($label));
+      $this->SLSR_pluginLogs('byte', json_encode($label));
       if ($byteFile['status'] == true) {
         $labelFile = $this->generatePdfFromByte($this->orderId, $byteFile['data']['fileContents']);
         $tracking = wc_get_order_item_meta($this->orderId, 'shipvista_tracking_number');
@@ -272,9 +272,9 @@ trait SLSR_WcShipvistaFunctions
           $this->update_option('shipvista_refresh_token', $refreshObject['shipvista_refresh_token']['tokenString']);
           $this->update_option('shipvista_token_expires', $refreshObject['access_token']['expireAt']);
           $this->update_option('shipvista_plugin_errors', '');
-          $this->pluginLogs('Authentication', 'Token refreshed successfully');
+          $this->SLSR_pluginLogs('Authentication', 'Token refreshed successfully');
         } else { // could not refresh the token there was an error
-          $this->pluginLogs('Authentication', 'Could not refresh your access token on shipvista.com');
+          $this->SLSR_pluginLogs('Authentication', 'Could not refresh your access token on shipvista.com');
         }
 
         // refresh token
@@ -282,21 +282,21 @@ trait SLSR_WcShipvistaFunctions
     }
   }
 
-  public function pluginLogs($title,  ?string $error)
+  public function SLSR_pluginLogs($title,  ?string $error)
   {
     // check to see if logging is turned on
-    if ($this->get_option('shipvista_log_satus') == 'yes') {
+    if ($this->logStatus) {
       if (strlen($error) > 0) {
         $errorFile = fopen(SHIPVISTA__PLUGIN_DIR . "/assets/logs/" . strtolower($title) . "_logs.txt", "a+") or die("Unable to open file!");
         $txt = date('Y-m-d h:i:s') . ": $error, \n";
         fwrite($errorFile, $txt);
         fclose($errorFile);
-        // if (in_array($title, $this->errorLogKeys)) {
-        //   $errorList = @json_decode($this->get_option('shipvista_plugin_errors'), true) ?? [];
-        //   $errorList[$title] = $error . ' > Time ' . date('Y-m-d h:i:s');
-        //   $dbList = json_encode($errorList);
-        //   $this->update_option('shipvista_plugin_errors', $dbList);
-        // }
+        if (in_array($title, $this->errorLogKeys)) {
+          $errorList = @json_decode($this->get_option('shipvista_plugin_errors'), true) ?? [];
+          $errorList[$title] = $error . ' > Time ' . date('Y-m-d h:i:s');
+          $dbList = json_encode($errorList);
+          $this->update_option('shipvista_plugin_errors', $dbList);
+        }
       }
     }
   }
@@ -359,7 +359,7 @@ trait SLSR_WcShipvistaFunctions
   /**
    * Get apiHeaders to send
    */
-  public function getApiHeaders()
+  public function SLSR_getApiHeaders()
   {
     // 'Content-Type: application/x-www-form-urlencoded; charset=utf-8',
     $headers = [
@@ -380,14 +380,14 @@ trait SLSR_WcShipvistaFunctions
     $this->apiHttpErrorCode = '';
     $url = $this->baseApiUrl . rtrim(ltrim($endPoint, '/'), '/');
 
-    $header = $this->getApiHeaders();
-    $response =  $this->cUrlGetData($url, $object, $header, $type);
+    $header = $this->SLSR_getApiHeaders();
+    $response =  $this->SLSR_cUrlGetData($url, $object, $header, $type);
     return  (array) $response ?? false;
   }
 
 
 
-  function cUrlGetData($url, $post_fields = null, $headers = [],  string $type = 'POST')
+  function SLSR_cUrlGetData($url, $post_fields = null, $headers = [],  string $type = 'POST')
   {
     $body = [
       'method' => $type,
@@ -397,16 +397,16 @@ trait SLSR_WcShipvistaFunctions
     ];
     $result = wp_remote_request($url, $body);
 
-    $this->pluginLogs('API_request', json_encode($post_fields));
+    $this->SLSR_pluginLogs('API_request', json_encode($post_fields));
     if (is_wp_error($result)) {
       $msg = $result->get_error_message();
-      $this->pluginLogs('API_ERR', $msg);
+      $this->SLSR_pluginLogs('API_ERR', $msg);
       return false;
     }
 
     $responseBody = json_decode($result['body'], true);
-    $this->pluginLogs('API_OK', $url);
-    $this->pluginLogs('API_response', json_encode($responseBody));
+    $this->SLSR_pluginLogs('API_OK', $url);
+    $this->SLSR_pluginLogs('API_response', json_encode($responseBody));
 
     return (array) $responseBody;
   }

@@ -24,63 +24,63 @@
         <?php } ?>
 
         <?php if (count($this->content['user']) > 0) { ?>
-           <!-- <div class="sv_col-12 sv_mb-1 sv_pt-2">
+            <!-- <div class="sv_col-12 sv_mb-1 sv_pt-2">
                 <h4 class="sv_text-dark"><span class="fa fa-user"></span> My account </h4>
             </div> -->
 
             <div class="sv_col-12 sv_col-md-6 sv_mb-3 sv_align-self-center sv_border-right">
-				
-				<div class="sv_alert sv_alert-warning sv_mb-3">
-					<div class="sv_card-body">
-						<div class="sv_media">
-							<img src="<?php echo SHIPVISTA__PLUGIN_URL; ?>assets/img/yellow_alert.png" style="height: 50px;width:50px;" class="sv_mr-3" />
-							<div class="sv_media-body">
-								<h5>Notice</h5>
-								<p class="sv_m-0">
-									 This plugin is made by shipvista.com on behalf of our mutual customers. This plugin is currently in BETA stage (early release) and has been tested with over 10 different themes. If you experience any problems using this plugin, please Send a detailed <a href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=feedback'  ?>"> <b>Feedback</b> </a> to let us know what the issue is so we can fix it immediately. We normally reply within 24 to 72 hours.
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				<div class="py-3">
-					<div class="sv_mb-2">
-						<h5>Quick Setup</h5>
-						<small>Please complete the following steps to get started.</small>
-					</div>
-					<div class="sv_row">
-						<div class="sv_col-12 sv_col-md-6">
-							<div class="sv_card">
-								<div class="sv_card-body">
-									<h5  style="font-size:12px;"><b>SETUP CARRIERS</b></h5>
-									<p>Turn on carriers and select shipping methods</p>
-									<div>
-										<div class="sv_float-right"><a href="<?php echo $this->pageLink . '&wcs_page=carriers' ?>"> <small> <i class="dashicons dashicons-arrow-right-alt"></i></small> </a></div>
-										<?php echo ($this->get_option('carrier_canada_post_enabled') == 'yes' ?  '<img src="'.SHIPVISTA__PLUGIN_URL.'assets/img/check_on.png" style="height:15px;width:15px;"> <small class="sv_text-success">Active</small>' : '<img src="'.SHIPVISTA__PLUGIN_URL.'assets/img/check_off.png" style="height:15px;width:15px;"> <small class="sv_text-grey">Pending</small>' ) ?>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="sv_col-12 sv_col-md-6">
-							<div class="sv_card">
-								<div class="sv_card-body">
-									<h5 style="font-size:12px;"><b>SHIPPER SETTINGS</b></h5>
-									<p>Setup your shipping from address to use to obtain rates.</p>
-									<div>
-										<div class="sv_float-right"><a href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=shipper' ?>"> <small> <i class="dashicons dashicons-arrow-right-alt"></i></small> </a></div>
-										<?php echo ($this->content['postcode'] == '' ? '<img src="'.SHIPVISTA__PLUGIN_URL.'assets/img/check_off.png" style="height:15px;width:15px;"> <small class="sv_text-warning">Pending</small>' : '<img src="'.SHIPVISTA__PLUGIN_URL.'assets/img/check_on.png" style="height:15px;width:15px;"> <small class="sv_text-success">Active</small>') ?>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						
-						
-						
-					</div>
-				</div>
+
+                <div class="sv_alert sv_alert-warning sv_mb-3">
+                    <div class="sv_card-body">
+                        <div class="sv_media">
+                            <img src="<?php echo SHIPVISTA__PLUGIN_URL; ?>assets/img/yellow_alert.png" style="height: 50px;width:50px;" class="sv_mr-3" />
+                            <div class="sv_media-body">
+                                <h5>Notice</h5>
+                                <p class="sv_m-0">
+                                    This plugin is made by shipvista.com on behalf of our mutual customers. This plugin is currently in BETA stage (early release) and has been tested with over 10 different themes. If you experience any problems using this plugin, please Send a detailed <a href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=feedback'  ?>"> <b>Feedback</b> </a> to let us know what the issue is so we can fix it immediately. We normally reply within 24 to 72 hours.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="py-3">
+                    <div class="sv_mb-2">
+                        <h5>Quick Setup</h5>
+                        <small>Please complete the following steps to get started.</small>
+                    </div>
+                    <div class="sv_row">
+                        <div class="sv_col-12 sv_col-md-6">
+                            <div class="sv_card">
+                                <div class="sv_card-body">
+                                    <h5 style="font-size:12px;"><b>SETUP CARRIERS</b></h5>
+                                    <p>Turn on carriers and select shipping methods</p>
+                                    <div>
+                                        <div class="sv_float-right"><a href="<?php echo $this->pageLink . '&wcs_page=carriers' ?>"> <small> <i class="dashicons dashicons-arrow-right-alt"></i></small> </a></div>
+                                        <?php echo ($this->get_option('carrier_canada_post_enabled') == 'yes' ?  '<img src="' . SHIPVISTA__PLUGIN_URL . 'assets/img/check_on.png" style="height:15px;width:15px;"> <small class="sv_text-success">Active</small>' : '<img src="' . SHIPVISTA__PLUGIN_URL . 'assets/img/check_off.png" style="height:15px;width:15px;"> <small class="sv_text-grey">Pending</small>') ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sv_col-12 sv_col-md-6">
+                            <div class="sv_card">
+                                <div class="sv_card-body">
+                                    <h5 style="font-size:12px;"><b>SHIPPER SETTINGS</b></h5>
+                                    <p>Setup your shipping from address to use to obtain rates.</p>
+                                    <div>
+                                        <div class="sv_float-right"><a href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=shipper' ?>"> <small> <i class="dashicons dashicons-arrow-right-alt"></i></small> </a></div>
+                                        <?php echo ($this->content['postcode'] == '' ? '<img src="' . SHIPVISTA__PLUGIN_URL . 'assets/img/check_off.png" style="height:15px;width:15px;"> <small class="sv_text-grey">Pending</small>' : '<img src="' . SHIPVISTA__PLUGIN_URL . 'assets/img/check_on.png" style="height:15px;width:15px;"> <small class="sv_text-success">Active</small>') ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
 
 
             </div>
@@ -116,8 +116,8 @@
                     </table>
 
                 </div> -->
-				
-				                <div class="sv_p-3 shadow-none sv_border-0 sv_text-center">
+
+                <div class="sv_p-3 shadow-none sv_border-0 sv_text-center">
                     <div class="sv_card-body sv_mb-3">
                         <img src="<?php echo  SHIPVISTA__PLUGIN_URL . 'assets/img/avatar.png' ?>" alt="<?php echo $this->content['user']['name'] ?> " style="height: 150px;" class="sv_mb-2">
                         <h3><?php echo $this->content['user']['name'] ?></h3>
