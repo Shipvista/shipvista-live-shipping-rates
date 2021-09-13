@@ -28,7 +28,7 @@ define('SHIPVISTA__PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SHIPVISTA__PLUGIN_SITE', (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]");
 define('SHIPVISTA__PLUGIN_FILE', __FILE__);
 define('SHIPVISTA__PLUGIN_VERSION', '1.0.0');
-define('SHIPVISTA__PLUGIN_SLUG', 'wc-settings'); 
+define('SHIPVISTA__PLUGIN_SLUG', 'wc-settings');
 
 if (!defined('WPINC')) {
   die('security by preventing any direct access to your plugin file');
@@ -356,7 +356,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         wp_register_script('shipvista_plugin_scripts_frontend', plugins_url('assets/js/shipvista_panel.js', __FILE__));
         wp_enqueue_script('shipvista_plugin_scripts_frontend');
         wp_localize_script('shipvista_plugin_scripts_fronend', 'my_ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
-        ?>
+?>
         <script>
           var loaderContainer = `
             <div class="sv_LoaderWrap">
@@ -658,7 +658,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     <div class="notice notice-success is-dismissible">
       <p><?php _e('Thanks for sending us your feedback', 'shipvista-feedback-success'); ?></p>
     </div>
-  <?php
+<?php
   }
 
   function SLSR_feedback_error()

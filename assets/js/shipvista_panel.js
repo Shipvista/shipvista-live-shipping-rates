@@ -241,13 +241,15 @@ function structureCartView() {
                                         <h4>Shipping</h4></div>`;
                 }
                 var html = parent.innerHTML;
-
+                if(!document.getElementById('_svCalculateNowBtn')){
                 parent.innerHTML = `
-                   <div class="sv_d-flex">
-                        ${appendHeader}
+                   <div class="sv_d-flex" id="_svCalculateNowBtn">
+                    <div class="dv_flex-fill">
+                    <h4>Shipping</h4></div>
                         <div class="pl-2"><a id="sv_calculateBtnToggle" onclick="toggleCartShippingFields()" class="sv_btn sv_btn-sm sv_btn-danger sv_text-white"><small>Calculate Now</small></a></div>
 					</div>
 				` + html;
+                }
 
             }
 
