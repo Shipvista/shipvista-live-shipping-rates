@@ -170,7 +170,10 @@ function structureCartView() {
         }
     }
 	
-	
+	if(list.length > 0 ){
+        isMissingAddress = false;
+    }
+
     var url = window.location.href;
     var exp = url.split('/');
     try {
@@ -234,18 +237,17 @@ function structureCartView() {
 
                 var parent = document.getElementsByClassName('woocommerce-shipping-methods')[0].parentNode;
                 var appendHeader = '';
-                if (parent.getElementsByTagName('h4')[0]) {
+                if (parent.getElementsByTagName('h4')[0] && !document.getElementById('sv_calculateBtnToggle')) {
                     parent.getElementsByTagName('h4')[0].remove();
                     appendHeader = `
-                    <div class="dv_flex-fill">
-                                        <h4>Shipping</h4></div>`;
+                    <div class="sv_flex-fill"><h4>Shipping</h4></div>`;
                 }
                 var html = parent.innerHTML;
-                if(!document.getElementById('_svCalculateNowBtn')){
+                if(!document.getElementById('sv_calculateBtnToggle')){
                 parent.innerHTML = `
-                   <div class="sv_d-flex" id="_svCalculateNowBtn">
-                    <div class="dv_flex-fill">
-                    <h4>Shipping</h4></div>
+                   <div class="sv_d-flex">
+                        <div class="sv_flex-fill">
+                        <h4>Shipping</h4></div>
                         <div class="pl-2"><a id="sv_calculateBtnToggle" onclick="toggleCartShippingFields()" class="sv_btn sv_btn-sm sv_btn-danger sv_text-white"><small>Calculate Now</small></a></div>
 					</div>
 				` + html;
@@ -362,7 +364,8 @@ function structureCartView() {
         } catch (e) {
             document.getElementsByClassName('woocommerce-shipping-methods')[0].innerHTML = card;
         }
-    }    }
+    }    
+}
 
 }
 
@@ -446,7 +449,10 @@ jQuery(document.body).on('updated_cart_totals', function () {
 
 function removeBtnEventListener(){
 	if(this.hasAttribute('href')){
-		this.style.display = 'none';
+		this.href = '#';
+		var element = this;
+		var new_element = element.cloneNode(true);
+		element.parentNode.replaceChild(new_element, element);
 	}
 }
 
@@ -469,7 +475,7 @@ var change = setInterval(()=>{
         }
     }
 	
-	if(!isEventSet){
+	if(currentPage == 'cart' && !isEventSet ){
 	try{
 				var removeBtns = document.getElementsByClassName('remove');
 				for(var i = 0; i < removeBtns.length; i++){
