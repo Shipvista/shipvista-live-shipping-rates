@@ -93,7 +93,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
           $this->init_form_fields();
           $this->init_settings();
           // add sidebar widget to post
-          $this->logStatus = get_option('shipvista_log_status') == 'yes' ? true : false;
+          $this->logStatus = $this->get_option('shipvista_log_status') == 'yes' ? true : false;
 
           // Save settings in admin if you have any defined
           add_action('woocommerce_update_options_shipping_' . $this->id, array($this, 'process_admin_options'));
@@ -125,6 +125,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         public function calculate_shipping($package = array())
         {
 
+          if($this->enabled == 'yes'){
           // include get available shipping rates
           $rateList = $this->getShippingRates($package);
 
@@ -153,6 +154,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
           }
         }
       }
+      }
     }
   }
 
@@ -168,7 +170,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
   function shipvista_validate_order($posted)
   {
-
+    if($this->enabled == 'yes'){
     $packages = WC()->shipping->get_packages();
 
     $chosen_methods = WC()->session->get('chosen_shipping_methods');
@@ -193,6 +195,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         }
       }
     }
+  }
   }
 
 
