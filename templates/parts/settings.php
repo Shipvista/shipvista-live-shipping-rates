@@ -4,9 +4,9 @@
         <!-- set header -->
 
         <nav class="sv_navbar  sv_p-0 sv_navbar-expand-lg sv_navbar-light sv_bg-light sv_text-dark sv_m-0">
-            
+
             <div class="sv_m-0 " id="sv_navbarNav">
-                <ul class="sv_d-flex sv_m-0 sv_p-0 sv_flex-wrap" >
+                <ul class="sv_d-flex sv_m-0 sv_p-0 sv_flex-wrap">
                     <li class="sv_nav-item sv_border-right sv_m-0  <?php echo (($this->settingTabs == 'basic' || $this->settingTabs == '')  ? 'sv_active sv_bg-dark  sv_text-white' : '') ?>">
                         <a class="sv_nav-link <?php echo ($this->settingTabs == 'basic' ? 'sv_text-white' : 'sv_text-dark') ?>" href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=basic' ?>">Basic</a>
                     </li>
@@ -19,7 +19,7 @@
                     <li class="sv_nav-item sv_border-right sv_m-0 <?php echo ($this->settingTabs == 'restrict' ? 'sv_active sv_bg-dark sv_text-white' : '') ?>">
                         <a class="sv_nav-link <?php echo ($this->settingTabs == 'restrict' ? 'sv_text-white' : 'sv_text-dark') ?>" href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=restrict' ?>">Restrictions </a>
                     </li>
-					
+
                     <li class="sv_nav-item  sv_m-0 <?php echo ($this->settingTabs == 'apis' ? 'sv_active sv_bg-dark  sv_text-white' : '') ?>">
                         <a class="sv_nav-link <?php echo ($this->settingTabs == 'apis' ? 'sv_text-white' : 'sv_text-dark') ?>" href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=apis' ?>">Third Party APIs </a>
                     </li>
@@ -40,50 +40,50 @@
                     <th>Values</th>
                 </tr>
             </thead>
-            <?php if  ($this->settingTabs == 'feedback') { ?>
-			                <tbody>
-<tr>
+            <?php if ($this->settingTabs == 'feedback') { ?>
+                <tbody>
+                    <tr>
                         <td colspan="2">
-							<h4>FeedBack</h4>
-                      		<p class="sv_mb-3">
-                              Having errors using this plugin? We would love to get your feedback on this plugin and how we can make it better for the community.
-							</p>
-							
-							<!-- thank you note -->
-							
-							<div class="mb-3">
-								<textarea class="sv_form-control" style="min-height: 80px;" rows="20" name="shipvista_feedback" id="shipvista_feedback" minlength="3" placeholder="Enter feedback"></textarea>
-							</div>
-							
-							<div calss="sv_mb-3">
-							  <button type="button" class="sv_btn sv_btn-info" onclick="sv_WooSave()"> Submit Feedback</button>
-							</div>
-							
+                            <h4>FeedBack</h4>
+                            <p class="sv_mb-3">
+                                Having errors using this plugin? We would love to get your feedback on this plugin and how we can make it better for the community.
+                            </p>
+
+                            <!-- thank you note -->
+
+                            <div class="mb-3">
+                                <textarea class="sv_form-control" style="min-height: 80px;" rows="20" name="shipvista_feedback" id="shipvista_feedback" minlength="3" placeholder="Enter feedback"></textarea>
+                            </div>
+
+                            <div calss="sv_mb-3">
+                                <button type="button" class="sv_btn sv_btn-info" onclick="sv_WooSave()"> Submit Feedback</button>
+                            </div>
+
                         </td>
                     </tr>
-								
-							<tbody>
-            <?php } elseif ($this->settingTabs == 'restrict') { ?>
-			<tbody>
-					
+
+                <tbody>
+                <?php } elseif ($this->settingTabs == 'restrict') { ?>
+                <tbody>
+
                     <tr>
                         <td colspan="2">
                             <h4>Restrict Postal Codes/Zip Codes</h4>
                             <p>Use this option to set restriction to locations where shipping discounts will not apply.</p>
                         </td>
-				</tr>
-				<tr>
+                    </tr>
+                    <tr>
                         <td>Locations <br>
                             <p>Sample Format: Country_Code_1: POSTCODES_1,POSTCODE_2, etc.. | Country_Code_2 ....</p>
-							<small>Separate each country (only 2 characters) with a pipe( | ),<br> Separate country code with restricted postcodes with a colon( : ), <br>Separate each restricted postal code with a comma( , ).</small> <br>
-							<small><b>All postal codes beginning with that set in here will be restricted. E.g. You can put one or more letters to restrict all postal codes beginning with that letter. </b></small>
+                            <small>Separate each country (only 2 characters) with a pipe( | ),<br> Separate country code with restricted postcodes with a colon( : ), <br>Separate each restricted postal code with a comma( , ).</small> <br>
+                            <small><b>All postal codes beginning with that set in here will be restricted. E.g. You can put one or more letters to restrict all postal codes beginning with that letter. </b></small>
                         </td>
                         <td>
                             <textarea class="sv_form-control" class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_restricted_locations" cols="20" rows="15" style="min-width: 300px;min-height:200px" placeholder="Enter locations" name="<?php echo $this->fieldPrepend ?>shipvista_restricted_locations"><?php echo ($this->get_option('shipvista_restricted_locations')); ?></textarea>
                         </td>
                     </tr>
-				
-			</tbody>
+
+                </tbody>
 
                 <tfoot>
                     <tr>
@@ -94,18 +94,18 @@
                         </td>
                     </tr>
                 </tfoot>
-			
-			<?php } elseif ($this->settingTabs == 'shipper') { ?>
+
+            <?php } elseif ($this->settingTabs == 'shipper') { ?>
 
 
                 <!-- shipper setting -->
                 <tbody>
 
                     <tr>
-                            <td colspan="2">
-                                <h4>Shippers Settings</h4>
-                                <p>Use this option to set your ship from location.</p>
-                            </td>
+                        <td colspan="2">
+                            <h4>Shippers Settings</h4>
+                            <p>Use this option to set your ship from location.</p>
+                        </td>
                     </tr>
                     <tr>
                         <td>Origin Country Code* <br>
@@ -197,9 +197,9 @@
                 </tfoot>
 
             <?php } elseif ($this->settingTabs == 'apis') { ?>
-			
-			              <tbody>
-                              
+
+                <tbody>
+
                     <tr>
                         <th colspan="2">
                             <h4>APIs</h4>
@@ -225,16 +225,16 @@
 
                     <tr>
                         <td>Google Places Api Key <br>
-							<small>Copy and paste you Google Places Api Key. <a target="_blank" href="https://developers.google.com/maps/documentation/javascript/places-autocomplete">Learn more</a> on how to get your Google Places API key.</small>
+                            <small>Copy and paste you Google Places Api Key. <a target="_blank" href="https://developers.google.com/maps/documentation/javascript/places-autocomplete">Learn more</a> on how to get your Google Places API key.</small>
                         </td>
                         <td>
                             <input type="text" id="<?php echo $this->fieldPrepend ?>shipvista_google_places_api_key" name="<?php echo $this->fieldPrepend ?>shipvista_google_places_api_key" value="<?php echo $this->get_option('shipvista_google_places_api_key') ?: '' ?>" class="sv_form-control" />
                         </td>
                     </tr>
-							 
-							  
-			</tbody>
-			<tfoot>
+
+
+                </tbody>
+                <tfoot>
                     <tr>
                         <td colspan="2">
                             <div class="sv_text-center sv_my-3">
@@ -243,7 +243,7 @@
                         </td>
                     </tr>
                 </tfoot>
-			<?php } elseif ($this->settingTabs == 'dimension') { ?>
+            <?php } elseif ($this->settingTabs == 'dimension') { ?>
 
                 <!-- shipper setting -->
                 <tbody>
@@ -452,7 +452,7 @@
                             <small>Enter pickup instructions to display to customers which they have to follow in order to come for in-store pickup.</small>
                         </td>
                         <td>
-                        	<textarea class="sv_form-control" class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_pickup_note" name="<?php echo $this->fieldPrepend ?>shipvista_pickup_note"><?php echo ($this->get_option('shipvista_pickup_note')); ?></textarea>
+                            <textarea class="sv_form-control" class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_pickup_note" name="<?php echo $this->fieldPrepend ?>shipvista_pickup_note"><?php echo ($this->get_option('shipvista_pickup_note')); ?></textarea>
                         </td>
                     </tr>
 
@@ -461,8 +461,22 @@
                             <small>Enter shop locations to display to customers for pickup.</small>
                         </td>
                         <td>
-                        	<input type="text" id="<?php echo $this->fieldPrepend ?>shipvista_pickup_address" name="<?php echo $this->fieldPrepend ?>shipvista_pickup_address" value="<?php echo $this->get_option('shipvista_pickup_address') ?>" class="sv_form-control" />
+                            <input type="text" id="<?php echo $this->fieldPrepend ?>shipvista_pickup_address" name="<?php echo $this->fieldPrepend ?>shipvista_pickup_address" value="<?php echo $this->get_option('shipvista_pickup_address') ?>" class="sv_form-control" />
 
+                        </td>
+                    </tr>
+
+
+                    <tr class="">
+                        <td>
+                            Enable API Logs <br>
+                            <small>Turn this option on to log every request made by this plugin to shipvista. Logs are found in the plugin directory */assets/logs </small>
+                        </td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" <?php echo ($this->get_option('shipvista_log_status') == 'yes' ? 'checked' : '') ?> class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_log_status" name="<?php echo $this->fieldPrepend ?>shipvista_log_status">
+                                <label class="custom-control-label" for="<?php echo $this->fieldPrepend ?>shipvista_log_status"></label>
+                            </div>
                         </td>
                     </tr>
 

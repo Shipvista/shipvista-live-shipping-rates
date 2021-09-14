@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-class ShipvistaActions extends WC_Shipping_Method
+class SLSR_ShipvistaActions extends WC_Shipping_Method
 
 {
     public $result = ['status' => 0, 'message' => 'Invalid request'];
@@ -35,8 +35,9 @@ class ShipvistaActions extends WC_Shipping_Method
 }
 
 
-$action = new ShipvistaActions();
-$request = @$_GET['wcs_action']  ?: $_POST['wcs_action'] ?: 'home';
+$action = new SLSR_ShipvistaActions();
+$request = ($_GET['wcs_action']  ?: $_POST['wcs_action'] ?: 'home');
+$request = sanitize_text_field($request);
 $request = str_replace('-', ' ', trim(strtolower($request)));
 $methodName = str_replace(' ', '', lcfirst(ucwords($request)));
 $response = ['status' => '', 'message' => 'Invalid request'];

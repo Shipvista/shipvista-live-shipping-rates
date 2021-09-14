@@ -63,9 +63,9 @@
         </div>
 
 
-        
+
     </div>
     <div class="sv_text-center sv_my-3">
-            <button type="button" onclick="sv_WooSave()" class="sv_btn sv_btn-primary"> Save Settings</button>
-        </div>
+        <button type="button" onclick="sv_WooSave()" class="sv_btn sv_btn-primary"> Save Settings</button>
+    </div>
 </div>

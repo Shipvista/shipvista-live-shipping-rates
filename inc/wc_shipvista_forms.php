@@ -1,41 +1,43 @@
 <?php
+
 namespace Shipvista\Forms;
 
-trait WcShipvistaForms
+trait SLSR_WcShipvistaForms
 {
-    PUBLIC $shipvistaFormMethods = ['connectForm', 'basicForm', 'apiForm', 'shipperForm', 'restrictionForm', 'dimensionForm', 'carriersForm'];
-    PUBLIC $requiredForms = [];
+    public $shipvistaFormMethods = ['connectForm', 'basicForm', 'apiForm', 'shipperForm', 'restrictionForm', 'dimensionForm', 'carriersForm'];
+    public $requiredForms = [];
 
     function init_form_fields()
     {
         $form_list = [];
         foreach ($this->shipvistaFormMethods as $key => $method) {
             $method = 'sv_' . $method;
-            if(method_exists($this, $method)){
+            if (method_exists($this, $method)) {
                 $form = $this->$method() ?: [];
                 $form_list = array_merge($form_list, $form);
-            } 
+            }
         }
-         $this->form_fields = $form_list;
+        $this->form_fields = $form_list;
     }
 
     public function getRequiredForms(string $pageForm)
     {
         $form_list = [];
-        $settings = ['dimension' => 'sv_dimensionForm', 'shipper' => 'sv_shipperForm', 'apis' => 'sv_apiForm','restrict' => 'sv_restrictionForm',  'basic' => 'sv_basicForm'];
-        $settingTabs = isset($_GET['wcs_setting']) ? $_GET['wcs_setting'] : '';
+        $settings = ['dimension' => 'sv_dimensionForm', 'shipper' => 'sv_shipperForm', 'apis' => 'sv_apiForm', 'restrict' => 'sv_restrictionForm',  'basic' => 'sv_basicForm'];
+        $settingTabs = isset($_GET['wcs_setting']) ? sanitize_text_field($_GET['wcs_setting']) : '';
         $skip = @$settings[$settingTabs] ?: 'sv_basicForm';
         foreach ($this->shipvistaFormMethods as $key => $method) {
-            if($pageForm == $method || $skip == 'sv_'.$method){continue;}
+            if ($pageForm == $method || $skip == 'sv_' . $method) {
+                continue;
+            }
             $method = 'sv_' . $method;
-            if(method_exists($this, $method)){
+            if (method_exists($this, $method)) {
                 $form = $this->$method() ?: [];
                 $form_list = array_merge($form_list, $form);
-            } 
+            }
         }
 
         $this->requiredForms = $this->generate_settings_html($form_list, false);
-
     }
 
     public function sv_carriersForm()
@@ -55,26 +57,26 @@ trait WcShipvistaForms
             ),
         );
     }
-	
+
     public function settingsForm()
     {
         $settings = ['dimension' => 'sv_dimensionForm', 'shipper' => 'sv_shipperForm', 'basic' => 'sv_basicForm'];
-        $settingTabs = isset($_GET['wcs_setting']) ? $_GET['wcs_setting'] : 'basic';
-        if(array_key_exists($settingTabs, $settings)){
-        unset($settings[$settingTabs]);
-        //die(var_dump($settings));
-        $settingList = [];
-        foreach($settings as $method){
-            $settingList = array_merge($settings,   $this->$method());
-        }
-         return $settingList;
+        $settingTabs = isset($_GET['wcs_setting']) ? sanitize_text_field($_GET['wcs_setting']) : 'basic';
+        if (array_key_exists($settingTabs, $settings)) {
+            unset($settings[$settingTabs]);
+            $settingList = [];
+            foreach ($settings as $method) {
+                $settingList = array_merge($settings,   $this->$method());
+            }
+            return $settingList;
         }
     }
-	
-	
-	function sv_restrictionForm(){
+
+
+    function sv_restrictionForm()
+    {
         return array(
-            
+
             'shipvista_restricted_locations' => array(
                 'title' => __('Restricted Postal Codes', 'shipvista'),
                 'type'        => 'text',
@@ -82,15 +84,15 @@ trait WcShipvistaForms
                 'class' => 'form-control mb-3 form-control-sm',
                 'desc_tip'    => true,
             ),
-			);
-	}
+        );
+    }
 
 
     public function sv_dimensionForm()
     {
 
         return array(
-            
+
             'shipvista_dimension_length' => array(
                 'title' => __('Length', 'shipvista'),
                 'type'        => 'number',
@@ -136,9 +138,10 @@ trait WcShipvistaForms
 
         );
     }
-	
-	function sv_apiForm(){
-	return array(
+
+    function sv_apiForm()
+    {
+        return array(
             'shipvista_google_places_api' => array(
                 'title' => __('Enable google location prediction', 'shipvista'),
                 'type'        => 'checkbox',
@@ -153,9 +156,9 @@ trait WcShipvistaForms
                 'class' => 'form-control mb-3 form-control-sm',
                 'desc_tip'    => true,
             ),
-		);
-	}
-	
+        );
+    }
+
     public function sv_shipperForm()
     {
 
@@ -232,7 +235,6 @@ trait WcShipvistaForms
             )
 
         );
-        
     }
 
     public function sv_reportForm()
@@ -250,6 +252,11 @@ trait WcShipvistaForms
     public function sv_basicForm()
     {
         return array(
+            'shipvista_log_status' => array(
+                'title' => __('Enable plugin logs to use for debugging.', 'shipvista'),
+                'type'        => 'checkbox',
+                'class' => 'form-control mb-3 form-control-sm',
+            ),
             'shipvista_tax_status' => array(
                 'title' => __('Tax Status', 'shipvista'),
                 'type'        => 'text',
@@ -272,7 +279,7 @@ trait WcShipvistaForms
             'shipvista_fallback_rate_on' => array(
                 'title' => __('Fallback Rate On', 'shipvista'),
                 'type' => 'select',
-                'options' => [ 'per_unit_quantity' => 'Per Unit Quantity', 'per_cart_item' => 'Per Cart Item', 'total_order' => 'Total order'],
+                'options' => ['per_unit_quantity' => 'Per Unit Quantity', 'per_cart_item' => 'Per Cart Item', 'total_order' => 'Total order'],
                 'class' => 'form-control mb-3 form-control-sm',
                 'label_class' => ' d-none ',
             ),
@@ -333,10 +340,9 @@ trait WcShipvistaForms
                 'desc_tip'    => true,
             )
         );
-        
     }
 
-    function sv_connectForm( $options = [] )
+    function sv_connectForm($options = [])
     {
 
         return array(
