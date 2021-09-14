@@ -184,7 +184,7 @@
             <div class="sv_col-12 sv_col-md-6 sv_align-self-center sv_mb-3">
                 <div class=" sv_border-0 sv_pt-0 shadow-none sv_text-center">
 
-                    <div class="sv_card-body  <?php echo !empty($this->content['signup_email']) ? '' : 'sv_d-none'; ?>" id="_verifyCont">
+                    <div class="sv_card-body  <?php echo  esc_attr((!empty($this->content['signup_email']) ? '' : 'sv_d-none')); ?>" id="_verifyCont">
                         <div class="sv_text-center" id="_createAccountPending">
                             <?php if ($this->content['signup_verify'] == true) {  ?>
                                 <div class="sv_display-4 sv_pt-0"><i class="fa fa-user"></i></div>
@@ -201,7 +201,7 @@
                     <?php } else { ?>
                         <div class="sv_display-4 sv_pt-0"><i class="fa fa-user-times"></i></div>
                         <h4>Verify Account</h4>
-                        <p class="sv_border-bottom sv_py-3">Hi <b id="_verifyName"> <?php echo $this->content['signup_names'] ?></b>, To verify your account, click on the verification link sent to your email address <b id="_verifyEmail"> <?php echo $this->content['signup_email']; ?></b> </p>
+                        <p class="sv_border-bottom sv_py-3">Hi <b id="_verifyName"> <?php echo esc_html($this->content['signup_names']) ?></b>, To verify your account, click on the verification link sent to your email address <b id="_verifyEmail"> <?php echo esc_html($this->content['signup_email']); ?></b> </p>
                         <p><small>Not your email? Signup with a different email address.</small></p>
                         <div class="sv_mt-3"><a class="sv_btn sv_btn-danger sv_text-white" onclick="changeSignupDetails()">Sign Up?</a></div>
                     </div>
@@ -209,7 +209,7 @@
                 </div>
 
 
-                <div class="sv_card-body sv_pt-0 <?php echo empty($this->content['signup_email']) ? '' : 'sv_d-none'; ?> " id="_signupCont">
+                <div class="sv_card-body sv_pt-0 <?php echo  esc_attr((empty($this->content['signup_email']) ? '' : 'sv_d-none')); ?> " id="_signupCont">
                     <div class="sv_display-4 sv_pt-0"><i class="fa fa-user"></i></div>
                     <h4>Create Account</h4>
                     <p id="_createAccount">Don't have a shipvista account?
@@ -220,7 +220,7 @@
 
 
                     <div class="sv_py-2 sv_text-left sv_d-none sv_mb-2" id="_setupAccount">
-                        <input type="hidden" class="sv_form-control" id="woocommerce_shipvista_shipvista_create_user_link" value="<?php echo $this->content['verificationLink']; ?>" name="woocommerce_shipvista_shipvista_create_user_link">
+                        <input type="hidden" class="sv_form-control" id="woocommerce_shipvista_shipvista_create_user_link" value="<?php echo esc_attr($this->content['verificationLink']); ?>" name="woocommerce_shipvista_shipvista_create_user_link">
                         <div class="sv_mb-3">
                             <label for="">Names</label>
                             <input type="text" class="sv_form-control" id="woocommerce_shipvista_shipvista_create_user_names" placeholder="Enter full names." name="woocommerce_shipvista_shipvista_create_user_names">

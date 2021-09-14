@@ -9,16 +9,17 @@
                     <div class="sv_card-header" style="line-height: 45px;">
                         <div class="sv_d-flex justify-content-middle">
                             <div class="sv_pr-2 sv_align-self-center">
-                                <img src="<?php echo  SHIPVISTA__PLUGIN_URL . '/assets/img/canada_post.jpg' ?>" style="height: 45px;" class=" mr-2">
+                                <img src="<?php echo  esc_html(SHIPVISTA__PLUGIN_URL . '/assets/img/canada_post.jpg') ?>" style="height: 45px;" class=" mr-2">
                             </div>
+
                             <div class="sv_align-self-center mt-4 flex-fill">
                                 <div class="custom-control   custom-switch float-right">
                                     <input type="checkbox" onchange="shipvista_toggleCarrierOption('carrier_canada_post')" <?php echo ($this->get_option('carrier_canada_post_enabled') == 'yes' ? 'checked' : '') ?> class="custom-control-input" id="carrier_canada_post" name="carrier_canada_post">
                                     <label class="custom-control-label" for="carrier_canada_post"></label>
                                 </div>
                                 <!-- form  -->
-                                <textarea id="<?php echo $this->fieldPrepend ?>carrier_canada_post" name="<?php echo $this->fieldPrepend ?>carrier_canada_post" value="<?php echo $this->get_option('carrier_canada_post') ?>" class="form-control sv_d-none"></textarea>
-                                <input id="<?php echo $this->fieldPrepend ?>carrier_canada_post_enabled" name="<?php echo $this->fieldPrepend ?>carrier_canada_post_enabled" value="<?php echo $this->get_option('carrier_canada_post_enabled') ?>" class="form-control sv_d-none">
+                                <textarea id="<?php echo esc_attr($this->fieldPrepend) ?>carrier_canada_post" name="<?php echo esc_attr($this->fieldPrepend) ?>carrier_canada_post" value="<?php echo  esc_attr($this->get_option('carrier_canada_post')) ?>" class="form-control sv_d-none"></textarea>
+                                <input id="<?php echo esc_attr($this->fieldPrepend) ?>carrier_canada_post_enabled" name="<?php echo esc_attr($this->fieldPrepend) ?>carrier_canada_post_enabled" value="<?php echo  esc_attr($this->get_option('carrier_canada_post_enabled')) ?>" class="form-control sv_d-none">
                                 <!-- form -->
                                 <h6 class="m-0">Canada post</h6>
                             </div>
@@ -38,12 +39,12 @@
                             <!-- option -->
                             <div class="sv_d-flex sv_mb-2 w-100">
                                 <div class="sv_flex-fill">
-                                    <?php echo $option['name'] ?>
+                                    <?php echo esc_html($option['name']) ?>
                                 </div>
                                 <div>
                                     <div class="custom-control custom-switch carrier_canada_post_options">
-                                        <input type="checkbox" onchange="shipvista_carrierSelectOption('carrier_canada_post', '<?php echo $key ?>')" <?php echo ($option['checked'] == 1 ? 'checked' : '') ?> class="custom-control-input" data-shipvista-name="<?php echo $option['name'] ?>" id="<?php echo $key ?>" name="<?php echo $key ?>">
-                                        <label class="custom-control-label" for="<?php echo $key ?>"> </label>
+                                        <input type="checkbox" onchange="shipvista_carrierSelectOption('carrier_canada_post', '<?php echo esc_attr($key) ?>')" <?php echo esc_attr($option['checked'] == 1 ? 'checked' : '') ?> class="custom-control-input" data-shipvista-name="<?php echo esc_attr($option['name']) ?>" id="<?php echo esc_attr($key) ?>" name="<?php echo esc_attr($key) ?>">
+                                        <label class="custom-control-label" for="<?php echo esc_attr($key) ?>"> </label>
                                     </div>
                                 </div>
                             </div>

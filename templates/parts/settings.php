@@ -79,7 +79,7 @@
                             <small><b>All postal codes beginning with that set in here will be restricted. E.g. You can put one or more letters to restrict all postal codes beginning with that letter. </b></small>
                         </td>
                         <td>
-                            <textarea class="sv_form-control" class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_restricted_locations" cols="20" rows="15" style="min-width: 300px;min-height:200px" placeholder="Enter locations" name="<?php echo $this->fieldPrepend ?>shipvista_restricted_locations"><?php echo ($this->get_option('shipvista_restricted_locations')); ?></textarea>
+                            <textarea class="sv_form-control" class="custom-control-input" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_restricted_locations" cols="20" rows="15" style="min-width: 300px;min-height:200px" placeholder="Enter locations" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_restricted_locations"><?php echo ($this->get_option('shipvista_restricted_locations')); ?></textarea>
                         </td>
                     </tr>
 
@@ -112,7 +112,7 @@
                             <small>Shipping from country code. Country code must be 2 characters long e.g. US, CA...</small>
                         </td>
                         <td>
-                            <input type="text" required minlength="2" maxlength="2" id="<?php echo $this->fieldPrepend ?>shipvista_origin_country" name="<?php echo $this->fieldPrepend ?>shipvista_origin_country" value="<?php echo $this->get_option('shipvista_origin_country') ??  $this->wooCountry[0]  ?? 'US' ?>" class="sv_form-control" />
+                            <input type="text" required minlength="2" maxlength="2" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_country" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_country" value="<?php echo  esc_attr($this->get_option('shipvista_origin_country') ??  $this->wooCountry[0]  ?? 'US') ?>" class="sv_form-control" />
                         </td>
                     </tr>
                     <tr>
@@ -120,7 +120,7 @@
                             <small>Shipping from State Code. State Code must be 2 characters long.</small>
                         </td>
                         <td>
-                            <input type="text" required minlength="2" minlength="2" id="<?php echo $this->fieldPrepend ?>shipvista_origin_state" name="<?php echo $this->fieldPrepend ?>shipvista_origin_state" value="<?php echo $this->get_option('shipvista_origin_state') ??  @$this->wooCountry[1] ?? ''  ?>" class="sv_form-control" />
+                            <input type="text" required minlength="2" minlength="2" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_state" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_state" value="<?php echo  esc_attr($this->get_option('shipvista_origin_state') ??  @$this->wooCountry[1] ?? '')  ?>" class="sv_form-control" />
                         </td>
                     </tr>
                     <tr>
@@ -128,7 +128,7 @@
                             <small>Enter full Shipping from city name.</small>
                         </td>
                         <td>
-                            <input type="text" required id="<?php echo $this->fieldPrepend ?>shipvista_origin_city" name="<?php echo $this->fieldPrepend ?>shipvista_origin_city" value="<?php echo $this->get_option('shipvista_origin_city')  ?? $this->get_option('woocommerce_store_city')  ?>" class="sv_form-control" />
+                            <input type="text" required id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_city" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_city" value="<?php echo  esc_attr($this->get_option('shipvista_origin_city')  ?? $this->get_option('woocommerce_store_city'))  ?>" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -138,7 +138,7 @@
                             <small>Shipping from postal/zip code.</small>
                         </td>
                         <td>
-                            <input type="text" required id="<?php echo $this->fieldPrepend ?>shipvista_origin_postcode" name="<?php echo $this->fieldPrepend ?>shipvista_origin_postcode" value="<?php echo $this->get_option('shipvista_origin_postcode') ?? $this->get_option('woocommerce_store_postcode') ?>" class="sv_form-control" />
+                            <input type="text" required id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_postcode" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_postcode" value="<?php echo  esc_attr($this->get_option('shipvista_origin_postcode') ?? $this->get_option('woocommerce_store_postcode')) ?>" class="sv_form-control" />
                         </td>
                     </tr>
                     <tr>
@@ -146,7 +146,7 @@
                             <small>Shipping address (Shipping from address).</small>
                         </td>
                         <td>
-                            <input type="text" required minlength="3" id="<?php echo $this->fieldPrepend ?>shipvista_origin_address" name="<?php echo $this->fieldPrepend ?>shipvista_origin_address" value="<?php echo $this->get_option('shipvista_origin_address') ?? $this->get_option('woocommerce_store_address') ?>" class="sv_form-control" />
+                            <input type="text" required minlength="3" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_address" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_address" value="<?php echo  esc_attr($this->get_option('shipvista_origin_address') ?? $this->get_option('woocommerce_store_address')) ?>" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -155,7 +155,7 @@
                             <small>Shipping address line 2.</small>
                         </td>
                         <td>
-                            <input type="text" minlength="3" id="<?php echo $this->fieldPrepend ?>shipvista_origin_address_2" name="<?php echo $this->fieldPrepend ?>shipvista_origin_address_2" value="<?php echo $this->get_option('shipvista_origin_address_2') ??  $this->get_option('woocommerce_store_address_2') ?>" class="sv_form-control" />
+                            <input type="text" minlength="3" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_address_2" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_address_2" value="<?php echo  esc_attr($this->get_option('shipvista_origin_address_2') ??  $this->get_option('woocommerce_store_address_2')) ?>" class="sv_form-control" />
                         </td>
                     </tr>
                     <tr>
@@ -163,7 +163,7 @@
                             <small>Shipping address (Shipping from address).</small>
                         </td>
                         <td>
-                            <input type="text" required minlength="5" id="<?php echo $this->fieldPrepend ?>shipvista_user_email" name="<?php echo $this->fieldPrepend ?>shipvista_user_email" value="<?php echo ($this->get_option('shipvista_user_email') ??  $this->get_option('woocommerce_store_email_address')) ?>" class="sv_form-control" />
+                            <input type="text" required minlength="5" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_user_email" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_user_email" value="<?php echo  esc_attr(($this->get_option('shipvista_user_email') ??  $this->get_option('woocommerce_store_email_address'))) ?>" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -172,7 +172,7 @@
                             <small>Your store contact phone number.</small>
                         </td>
                         <td>
-                            <input type="tel" minlength="7" id="<?php echo $this->fieldPrepend ?>shipvista_origin_phone_number" name="<?php echo $this->fieldPrepend ?>shipvista_origin_phone_number" value="<?php echo $this->get_option('shipvista_origin_phone_number') ?>" class="sv_form-control" />
+                            <input type="tel" minlength="7" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_phone_number" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_origin_phone_number" value="<?php echo  esc_attr($this->get_option('shipvista_origin_phone_number')) ?>" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -181,7 +181,7 @@
                             <small>Which currency should shipping cost be returned in to you.</small>
                         </td>
                         <td>
-                            <input type="text" minlength="3" maxlength="3" id="<?php echo $this->fieldPrepend ?>shipvista_user_currency" name="<?php echo $this->fieldPrepend ?>shipvista_user_currency" value="<?php echo $this->get_option('shipvista_user_currency') ?: $this->get_option('woocommerce_currency') ?>" class="sv_form-control" />
+                            <input type="text" minlength="3" maxlength="3" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_user_currency" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_user_currency" value="<?php echo  esc_attr($this->get_option('shipvista_user_currency') ?: $this->get_option('woocommerce_currency')) ?>" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -214,8 +214,8 @@
                         </td>
                         <td>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" <?php echo ($this->get_option('shipvista_google_places_api') == 'yes' ? 'checked' : '') ?> class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_google_places_api" name="<?php echo $this->fieldPrepend ?>shipvista_google_places_api">
-                                <label class="custom-control-label" for="<?php echo $this->fieldPrepend ?>shipvista_google_places_api"></label>
+                                <input type="checkbox" <?php echo  esc_attr(($this->get_option('shipvista_google_places_api') == 'yes' ? 'checked' : '')) ?> class="custom-control-input" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_google_places_api" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_google_places_api">
+                                <label class="custom-control-label" for="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_google_places_api"></label>
                             </div>
                         </td>
                     </tr>
@@ -228,7 +228,7 @@
                             <small>Copy and paste you Google Places Api Key. <a target="_blank" href="https://developers.google.com/maps/documentation/javascript/places-autocomplete">Learn more</a> on how to get your Google Places API key.</small>
                         </td>
                         <td>
-                            <input type="text" id="<?php echo $this->fieldPrepend ?>shipvista_google_places_api_key" name="<?php echo $this->fieldPrepend ?>shipvista_google_places_api_key" value="<?php echo $this->get_option('shipvista_google_places_api_key') ?: '' ?>" class="sv_form-control" />
+                            <input type="text" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_google_places_api_key" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_google_places_api_key" value="<?php echo  esc_attr($this->get_option('shipvista_google_places_api_key') ?: '') ?>" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -258,7 +258,7 @@
                             <small>Default shipping length.</small>
                         </td>
                         <td>
-                            <input type="nubmer" min="0.01" id="<?php echo $this->fieldPrepend ?>shipvista_dimension_length" name="<?php echo $this->fieldPrepend ?>shipvista_dimension_length" value="<?php echo $this->get_option('shipvista_dimension_length') ?: '2.5' ?>" class="sv_form-control" />
+                            <input type="nubmer" min="0.01" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_length" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_length" value="<?php echo  esc_attr($this->get_option('shipvista_dimension_length') ?: '2.5') ?>" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -270,7 +270,7 @@
                             <small>Default shipping width.</small>
                         </td>
                         <td>
-                            <input type="nubmer" min="0.01" id="<?php echo $this->fieldPrepend ?>shipvista_dimension_width" name="<?php echo $this->fieldPrepend ?>shipvista_dimension_width" value="<?php echo $this->get_option('shipvista_dimension_width') ?: '2' ?>" class="sv_form-control" />
+                            <input type="nubmer" min="0.01" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_width" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_width" value="<?php echo  esc_attr($this->get_option('shipvista_dimension_width') ?: '2') ?>" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -280,7 +280,7 @@
                             <small>Default shipping height.</small>
                         </td>
                         <td>
-                            <input type="nubmer" min="0.01" id="<?php echo $this->fieldPrepend ?>shipvista_dimension_height" name="<?php echo $this->fieldPrepend ?>shipvista_dimension_height" value="<?php echo $this->get_option('shipvista_dimension_height') ?: '1' ?>" class="sv_form-control" />
+                            <input type="nubmer" min="0.01" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_height" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_height" value="<?php echo  esc_attr($this->get_option('shipvista_dimension_height') ?: '1') ?>" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -291,8 +291,8 @@
                             <small>Default shipping size unit</small>
                         </td>
                         <td>
-                            <select name="<?php echo $this->fieldPrepend ?>shipvista_dimension_size_unit" id="<?php echo $this->fieldPrepend ?>shipvista_dimension_size_unit" class="custom-select">
-                                <option value="cm" <?php echo ($this->get_option('shipvista_dimension_size_unit') == 'cm' ? 'selected' : ''); ?>>cm</option>
+                            <select name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_size_unit" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_size_unit" class="custom-select">
+                                <option value="cm" <?php echo  esc_attr(($this->get_option('shipvista_dimension_size_unit') == 'cm' ? 'selected' : '')); ?>>cm</option>
                             </select>
                         </td>
                     </tr>
@@ -302,7 +302,7 @@
                             <small>Default shipping weight.</small>
                         </td>
                         <td>
-                            <input type="nubmer" min="0.01" id="<?php echo $this->fieldPrepend ?>shipvista_dimension_weight" name="<?php echo $this->fieldPrepend ?>shipvista_dimension_weight" value="<?php echo $this->get_option('shipvista_dimension_weight') ?: 1 ?>" class="sv_form-control" />
+                            <input type="nubmer" min="0.01" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_weight" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_weight" value="<?php echo  esc_attr($this->get_option('shipvista_dimension_weight') ?: 1) ?>" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -313,9 +313,9 @@
                             <small>Default shipping weighing unit</small>
                         </td>
                         <td>
-                            <select name="<?php echo $this->fieldPrepend ?>shipvista_dimension_weight_unit" id="<?php echo $this->fieldPrepend ?>shipvista_dimension_weight_unit" class="custom-select">
-                                <option value="kg" <?php echo ($this->get_option('shipvista_dimension_weight_unit') == 'kg' ? 'selected' : ''); ?>>kg</option>
-                                <!-- <option value="lbs" <?php echo ($this->get_option('shipvista_dimension_weight_unit') == 'lbs' ? 'selected' : ''); ?>>lbs</option> -->
+                            <select name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_weight_unit" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_dimension_weight_unit" class="custom-select">
+                                <option value="kg" <?php echo  esc_attr(($this->get_option('shipvista_dimension_weight_unit') == 'kg' ? 'selected' : '')); ?>>kg</option>
+                                <!-- <option value="lbs" <?php echo  esc_attr(($this->get_option('shipvista_dimension_weight_unit') == 'lbs' ? 'selected' : '')); ?>>lbs</option> -->
                             </select>
                         </td>
                     </tr>
@@ -340,8 +340,8 @@
                         <td>Tax Status
                         </td>
                         <td>
-                            <select name="<?php echo $this->fieldPrepend ?>shipvista_tax_status" id="<?php echo $this->fieldPrepend ?>shipvista_tax_status" class="custom-select">
-                                <option value="taxable" <?php echo ($this->get_option('shipvista_tax_status') == 'taxable' ? 'selected' : ''); ?>>Taxable</option>
+                            <select name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_tax_status" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_tax_status" class="custom-select">
+                                <option value="taxable" <?php echo  esc_attr(($this->get_option('shipvista_tax_status') == 'taxable' ? 'selected' : '')); ?>>Taxable</option>
                                 <option value="none">None</option>
                             </select>
                         </td>
@@ -354,8 +354,8 @@
                         </td>
                         <td>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" <?php echo ($this->get_option('shipvista_auto_labels') == 'yes' ? 'checked' : '') ?> class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_auto_labels" name="<?php echo $this->fieldPrepend ?>shipvista_auto_labels">
-                                <label class="custom-control-label" for="<?php echo $this->fieldPrepend ?>shipvista_auto_labels"></label>
+                                <input type="checkbox" <?php echo  esc_attr(($this->get_option('shipvista_auto_labels') == 'yes' ? 'checked' : '')) ?> class="custom-control-input" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_auto_labels" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_auto_labels">
+                                <label class="custom-control-label" for="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_auto_labels"></label>
                             </div>
                         </td>
                     </tr>
@@ -364,7 +364,7 @@
                             <small>This cost will be added for every unit of products or the total order value if no shipping rates are obtained from carrier.</small>
                         </td>
                         <td>
-                            <input type="number" id="<?php echo $this->fieldPrepend ?>shipvista_fallback_rate" name="<?php echo $this->fieldPrepend ?>shipvista_fallback_rate" class="sv_form-control" value="<?php echo $this->get_option('shipvista_fallback_rate') ?: 50; ?>" />
+                            <input type="number" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_fallback_rate" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_fallback_rate" class="sv_form-control" value="<?php echo $this->get_option('shipvista_fallback_rate') ?: 50; ?>" />
                         </td>
                     </tr>
 
@@ -373,9 +373,9 @@
                             <small>This cost will be added for every unit of the product if no rule is applied to it</small>
                         </td>
                         <td>
-                            <select name="<?php echo $this->fieldPrepend ?>fullback_rate_on" id="<?php echo $this->fieldPrepend ?>fullback_rate_on" class="custom-select">
-                                <option value="per_unit_quantity" <?php echo ($this->get_option('shipvista_fallback_rate_on') == 'per_unit_quantity' ? 'selected' : '') ?>>Per Unit Quantity</option>
-                                <option value="total_order" <?php echo ($this->get_option('shipvista_fallback_rate_on') == 'total_order' ? 'selected' : '') ?>>Total Order</option>
+                            <select name="<?php echo  esc_attr($this->fieldPrepend) ?>fullback_rate_on" id="<?php echo  esc_attr($this->fieldPrepend) ?>fullback_rate_on" class="custom-select">
+                                <option value="per_unit_quantity" <?php echo  esc_attr(($this->get_option('shipvista_fallback_rate_on') == 'per_unit_quantity' ? 'selected' : '')) ?>>Per Unit Quantity</option>
+                                <option value="total_order" <?php echo  esc_attr(($this->get_option('shipvista_fallback_rate_on') == 'total_order' ? 'selected' : '')) ?>>Total Order</option>
                             </select>
                         </td>
                     </tr>
@@ -387,7 +387,7 @@
                             <small>Add a margin on shipping rates to be applied before displaying to customers. This is a percentage added to the total shipping cost before displaying it to the customer.<?php echo $this->get_option('shipvista_rate_margin') ?> </small>
                         </td>
                         <td>
-                            <input type="number" max="100" min="0" id="<?php echo $this->fieldPrepend ?>shipvista_rate_margin" value="<?php echo $this->get_option('shipvista_rate_margin') ?>" name="<?php echo $this->fieldPrepend ?>shipvista_rate_margin" class="sv_form-control" />
+                            <input type="number" max="100" min="0" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_rate_margin" value="<?php echo  esc_attr($this->get_option('shipvista_rate_margin')) ?>" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_rate_margin" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -396,7 +396,7 @@
                             <small>How long does it take to get the items ready for pickup? </small>
                         </td>
                         <td>
-                            <input type="number" max="100" min="0" id="<?php echo $this->fieldPrepend ?>shipvista_handling_time" value="<?php echo $this->get_option('shipvista_handling_time') ?>" name="<?php echo $this->fieldPrepend ?>shipvista_handling_time" class="sv_form-control" />
+                            <input type="number" max="100" min="0" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_handling_time" value="<?php echo  esc_attr($this->get_option('shipvista_handling_time')) ?>" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_handling_time" class="sv_form-control" />
                         </td>
                     </tr>
 
@@ -409,8 +409,8 @@
                         </td>
                         <td>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" <?php echo ($this->get_option('shipvista_free_shipping') == 'yes' ? 'checked' : '') ?> class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_free_shipping" name="<?php echo $this->fieldPrepend ?>shipvista_free_shipping">
-                                <label class="custom-control-label" for="<?php echo $this->fieldPrepend ?>shipvista_free_shipping"></label>
+                                <input type="checkbox" <?php echo  esc_attr(($this->get_option('shipvista_free_shipping') == 'yes' ? 'checked' : '')) ?> class="custom-control-input" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_free_shipping" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_free_shipping">
+                                <label class="custom-control-label" for="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_free_shipping"></label>
                             </div>
                         </td>
                     </tr>
@@ -420,7 +420,7 @@
                             <small>This is the maximum amount offered for free shipping. If a shipping cost from the carrier is above this amount the balance will be displayed to customers for them to pay. Free shipping is applied to regular shipments at 100% and other shipping options at 10%.</small>
                         </td>
                         <td>
-                            <input type="number" id="<?php echo $this->fieldPrepend ?>shipvista_free_max_amount" name="<?php echo $this->fieldPrepend ?>shipvista_free_max_amount" class="sv_form-control" value="<?php echo $this->get_option('shipvista_free_max_amount') ?: ''; ?>" />
+                            <input type="number" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_free_max_amount" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_free_max_amount" class="sv_form-control" value="<?php echo  esc_attr($this->get_option('shipvista_free_max_amount') ?: ''); ?>" />
                         </td>
                     </tr>
                     <tr>
@@ -428,7 +428,7 @@
                             <small>Additional handling time due to free shipping. This number of days will be added to the expected number of days of delivery displayed to the customer. </small>
                         </td>
                         <td>
-                            <input type="number" id="<?php echo $this->fieldPrepend ?>shipvista_free_shipping_days" name="<?php echo $this->fieldPrepend ?>shipvista_free_shipping_days" class="sv_form-control" value="<?php echo $this->get_option('shipvista_free_shipping_days') ?: ''; ?>" />
+                            <input type="number" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_free_shipping_days" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_free_shipping_days" class="sv_form-control" value="<?php echo  esc_attr($this->get_option('shipvista_free_shipping_days') ?: ''); ?>" />
                         </td>
                     </tr>
 
@@ -441,8 +441,8 @@
                         </td>
                         <td>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" <?php echo ($this->get_option('shipvista_pickup') == 'yes' ? 'checked' : '') ?> class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_pickup" name="<?php echo $this->fieldPrepend ?>shipvista_pickup">
-                                <label class="custom-control-label" for="<?php echo $this->fieldPrepend ?>shipvista_pickup"></label>
+                                <input type="checkbox" <?php echo  esc_attr(($this->get_option('shipvista_pickup') == 'yes' ? 'checked' : '')) ?> class="custom-control-input" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_pickup" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_pickup">
+                                <label class="custom-control-label" for="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_pickup"></label>
                             </div>
                         </td>
                     </tr>
@@ -452,7 +452,7 @@
                             <small>Enter pickup instructions to display to customers which they have to follow in order to come for in-store pickup.</small>
                         </td>
                         <td>
-                            <textarea class="sv_form-control" class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_pickup_note" name="<?php echo $this->fieldPrepend ?>shipvista_pickup_note"><?php echo ($this->get_option('shipvista_pickup_note')); ?></textarea>
+                            <textarea class="sv_form-control" class="custom-control-input" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_pickup_note" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_pickup_note"><?php echo  esc_attr($this->get_option('shipvista_pickup_note')); ?></textarea>
                         </td>
                     </tr>
 
@@ -461,7 +461,7 @@
                             <small>Enter shop locations to display to customers for pickup.</small>
                         </td>
                         <td>
-                            <input type="text" id="<?php echo $this->fieldPrepend ?>shipvista_pickup_address" name="<?php echo $this->fieldPrepend ?>shipvista_pickup_address" value="<?php echo $this->get_option('shipvista_pickup_address') ?>" class="sv_form-control" />
+                            <input type="text" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_pickup_address" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_pickup_address" value="<?php echo  esc_attr($this->get_option('shipvista_pickup_address')) ?>" class="sv_form-control" />
 
                         </td>
                     </tr>
@@ -474,8 +474,8 @@
                         </td>
                         <td>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" <?php echo ($this->get_option('shipvista_log_status') == 'yes' ? 'checked' : '') ?> class="custom-control-input" id="<?php echo $this->fieldPrepend ?>shipvista_log_status" name="<?php echo $this->fieldPrepend ?>shipvista_log_status">
-                                <label class="custom-control-label" for="<?php echo $this->fieldPrepend ?>shipvista_log_status"></label>
+                                <input type="checkbox" <?php echo esc_attr(($this->get_option('shipvista_log_status') == 'yes' ? 'checked' : '')) ?> class="custom-control-input" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_log_status" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_log_status">
+                                <label class="custom-control-label" for="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_log_status"></label>
                             </div>
                         </td>
                     </tr>
