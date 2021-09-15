@@ -7,21 +7,21 @@
 
             <div class="sv_m-0 " id="sv_navbarNav">
                 <ul class="sv_d-flex sv_m-0 sv_p-0 sv_flex-wrap">
-                    <li class="sv_nav-item sv_border-right sv_m-0  <?php echo (($this->settingTabs == 'basic' || $this->settingTabs == '')  ? 'sv_active sv_bg-dark  sv_text-white' : '') ?>">
-                        <a class="sv_nav-link <?php echo ($this->settingTabs == 'basic' ? 'sv_text-white' : 'sv_text-dark') ?>" href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=basic' ?>">Basic</a>
+                    <li class="sv_nav-item sv_border-right sv_m-0  <?php echo  esc_attr(($this->settingTabs == 'basic' || $this->settingTabs == '')  ? 'sv_active sv_bg-dark  sv_text-white' : '') ?>">
+                        <a class="sv_nav-link <?php echo  esc_attr(($this->settingTabs == 'basic' ? 'sv_text-white' : 'sv_text-dark')) ?>" href="<?php echo  esc_attr($this->pageLink . '&wcs_page=settings&wcs_setting=basic') ?>">Basic</a>
                     </li>
                     <li class="sv_nav-item sv_border-right sv_m-0  <?php echo ($this->settingTabs == 'shipper' ? 'sv_active sv_bg-dark  sv_text-white' : '') ?>">
-                        <a class="sv_nav-link <?php echo ($this->settingTabs == 'shipper' ? 'sv_text-white' : 'sv_text-dark') ?>" href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=shipper' ?>">Shipper Settings</a>
+                        <a class="sv_nav-link <?php echo  esc_attr(($this->settingTabs == 'shipper' ? 'sv_text-white' : 'sv_text-dark')) ?>" href="<?php echo  esc_attr($this->pageLink . '&wcs_page=settings&wcs_setting=shipper') ?>">Shipper Settings</a>
                     </li>
                     <li class="sv_nav-item sv_border-right  sv_m-0 <?php echo ($this->settingTabs == 'dimension' ? 'sv_active sv_bg-dark  sv_text-white' : '') ?>">
-                        <a class="sv_nav-link <?php echo ($this->settingTabs == 'dimension' ? 'sv_text-white' : 'sv_text-dark') ?>" href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=dimension' ?>">Dimension </a>
+                        <a class="sv_nav-link <?php echo  esc_attr(($this->settingTabs == 'dimension' ? 'sv_text-white' : 'sv_text-dark')) ?>" href="<?php echo  esc_attr($this->pageLink . '&wcs_page=settings&wcs_setting=dimension') ?>">Dimension </a>
                     </li>
                     <li class="sv_nav-item sv_border-right sv_m-0 <?php echo ($this->settingTabs == 'restrict' ? 'sv_active sv_bg-dark sv_text-white' : '') ?>">
-                        <a class="sv_nav-link <?php echo ($this->settingTabs == 'restrict' ? 'sv_text-white' : 'sv_text-dark') ?>" href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=restrict' ?>">Restrictions </a>
+                        <a class="sv_nav-link <?php echo  esc_attr(($this->settingTabs == 'restrict' ? 'sv_text-white' : 'sv_text-dark')) ?>" href="<?php echo  esc_attr($this->pageLink . '&wcs_page=settings&wcs_setting=restrict') ?>">Restrictions </a>
                     </li>
 
-                    <li class="sv_nav-item  sv_m-0 <?php echo ($this->settingTabs == 'apis' ? 'sv_active sv_bg-dark  sv_text-white' : '') ?>">
-                        <a class="sv_nav-link <?php echo ($this->settingTabs == 'apis' ? 'sv_text-white' : 'sv_text-dark') ?>" href="<?php echo $this->pageLink . '&wcs_page=settings&wcs_setting=apis' ?>">Third Party APIs </a>
+                    <li class="sv_nav-item  sv_m-0 <?php echo  esc_attr(($this->settingTabs == 'apis' ? 'sv_active sv_bg-dark  sv_text-white' : '')) ?>">
+                        <a class="sv_nav-link <?php echo  esc_attr(($this->settingTabs == 'apis' ? 'sv_text-white' : 'sv_text-dark')) ?>" href="<?php echo  esc_attr($this->pageLink . '&wcs_page=settings&wcs_setting=apis') ?>">Third Party APIs </a>
                     </li>
                 </ul>
             </div>
@@ -79,7 +79,7 @@
                             <small><b>All postal codes beginning with that set in here will be restricted. E.g. You can put one or more letters to restrict all postal codes beginning with that letter. </b></small>
                         </td>
                         <td>
-                            <textarea class="sv_form-control" class="custom-control-input" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_restricted_locations" cols="20" rows="15" style="min-width: 300px;min-height:200px" placeholder="Enter locations" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_restricted_locations"><?php echo ($this->get_option('shipvista_restricted_locations')); ?></textarea>
+                            <textarea class="sv_form-control" class="custom-control-input" id="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_restricted_locations" cols="20" rows="15" style="min-width: 300px;min-height:200px" placeholder="Enter locations" name="<?php echo  esc_attr($this->fieldPrepend) ?>shipvista_restricted_locations"><?php echo  esc_attr($this->get_option('shipvista_restricted_locations')); ?></textarea>
                         </td>
                     </tr>
 

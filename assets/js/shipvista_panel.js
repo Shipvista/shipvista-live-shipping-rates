@@ -449,10 +449,7 @@ jQuery(document.body).on('updated_cart_totals', function () {
 
 function removeBtnEventListener(){
 	if(this.hasAttribute('href')){
-		this.href = '#';
-		var element = this;
-		var new_element = element.cloneNode(true);
-		element.parentNode.replaceChild(new_element, element);
+        this.remove();
 	}
 }
 
