@@ -168,9 +168,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
   add_filter('woocommerce_shipping_methods', 'add_Shipvista');
 
-  function shipvista_validate_order($posted)
+  function shipvista_validate_order( $posted )
   {
-    if($this->enabled == 'yes'){
+
     $packages = WC()->shipping->get_packages();
 
     $chosen_methods = WC()->session->get('chosen_shipping_methods');
@@ -195,7 +195,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         }
       }
     }
-  }
   }
 
 
