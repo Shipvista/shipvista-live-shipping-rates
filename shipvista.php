@@ -170,7 +170,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
   function shipvista_validate_order($posted)
   {
-    if($this->enabled == 'yes'){
     $packages = WC()->shipping->get_packages();
 
     $chosen_methods = WC()->session->get('chosen_shipping_methods');
@@ -196,18 +195,17 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
       }
     }
   }
-  }
 
 
   function shipvista_update_order()
   {
 
     if (isset($_POST['shipvistaLabel_get_label']) && $_POST['shipvistaLabel_get_label'] == 1) {
-      $orderId = @$_POST['shipvistaLabel_order_id'] ?: '';
-      $code = @$_POST['shipvista_shipping_method'] ?: '';
-      $carrierId =  (int) @$_POST['shipvista_shipping_carrier'] ?: '';
+      $orderId = isset($_POST['shipvistaLabel_order_id']) ? sanitize_text_field($_POST['shipvistaLabel_order_id']) : '';
+      $code = isset($_POST['shipvistaLabel_order_id']) ? sanitize_text_field($_POST['shipvista_shipping_method']) : '';
+      $carrierId =  (int) sanitize_text_field($_POST['shipvista_shipping_carrier']) ?: 1;
 
-      $carrierOptions = (array) @json_decode(stripslashes($_POST['shipvista_shipping_options']), true) ?: [['code' => 'DC']];
+      $carrierOptions = (array) @json_decode(sanitize_text_field($_POST['shipvista_shipping_options']), true) ?: [['code' => 'DC']];
       SLSR_Shipvista();
       $Shipvista = new SLSR_Shipvista();
 
@@ -530,7 +528,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
   {
 
     $code = strtoupper(@$_POST['shipvista_get_postal']);
-    $country = @preg_replace('#[^a-zA-Z]#i', '', strtoupper($_POST['shipvista_get_country']));
+    $country = @preg_replace('#[^a-zA-Z]#i', '', strtoupper(sanitize_text_field($_POST['shipvista_get_country'])));
     $response = ['status' => false, 'message' => 'invalid postal code.'];
     if (strlen($code) > 3 && strlen($country) == 2) {
       $destinationAddress = [
@@ -562,7 +560,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
   {
     global $woocommerce;
     /* Get the user details to find user id for whom this order should be shown. Ideally, I believe it will be admin user. Make sure you change the email id*/
-    $orderId = $_GET['post'];
+    $orderId = sanitize_text_field($_GET['post']);
     // include payment get_included_files
     // we need it to get any order detailes
     $order = wc_get_order($orderId);
@@ -617,7 +615,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
   function SLSR_Shipvista_feedback($fields)
   {
     if (isset($_POST['shipvista_feedback'])) {
-      $feedback = preg_replace('#[^a-zA-Z0-9 \,\.\']#i', '', $_POST['shipvista_feedback']);
+      $feedback = preg_replace('#[^a-zA-Z0-9 \,\.\']#i', '', sanitize_text_field($_POST['shipvista_feedback']));
       // remove the post variable so we dont get duplicates
       unset($_POST['shipvista_feedback']);
 
