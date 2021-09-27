@@ -3,7 +3,7 @@ Tags: shipping, delivery, logistics, woocomemrce, free shipping, live rates, can
 Requires at least: 1.0.0
 Tested up to: 5.8
 Stable tag: 1.0.0
-Requires PHP: 7.0
+Requires PHP: 5.4.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -60,3 +60,17 @@ This plugin aims at providing your customer with live shipping rates on cart or 
 
 We have a feedback system to help answer any questions you might have regarding the plugin as well as provide assistance on how to configure the plugin. Please use the feedback option in the plugin dashboard to send us a mail directly.
 
+== Screenshots ==
+1. Login TO shipvista
+2. Shivista welcome screen
+3. Setup Carrier
+4. Settings - Basic
+5. Settings - Shipper's Settings
+6. Settings - dimensions
+7. Settings - Third-party API intergrations
+8. Settings - Restrict Postal codes
+9. Send feedback directly to our developers
+10. Front End: Cart Page view, when customer has not inputed their address
+11. Front End: Address form for customer
+12: Front End: Live Shipping rates on cart page
+13. Front End: Fallback Rate when invalid address or no shipping option
