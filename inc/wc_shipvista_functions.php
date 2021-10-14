@@ -393,7 +393,7 @@ trait SLSR_WcShipvistaFunctions
       'method' => $type,
       'body' => json_encode($post_fields),
       'headers' => $headers,
-      'sslverify' => 0
+      'sslverify' => 1
     ];
     $result = wp_remote_request($url, $body);
 
