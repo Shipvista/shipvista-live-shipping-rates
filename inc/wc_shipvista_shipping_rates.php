@@ -15,7 +15,7 @@ trait SLSR_WcShipvistaRates
     {
 
         $destination = $package['destination'];
-        $postcode = @$destination['postcode'];
+        $postcode = isset($destination['postcode']) ? $destination['postcode'] : '';
         $address = [];
         if (isset($_COOKIE['shipvista_temp_address']) && empty($postcode)) {
             $address = json_decode(stripslashes(sanitize_text_field($_COOKIE['shipvista_temp_address'])), true);
@@ -23,10 +23,10 @@ trait SLSR_WcShipvistaRates
         if ($isAdmin == true) {
             $destinationAddress = $destination;
         } else {
-
+            $country_code = isset($destination['country']) ? $destination['country'] : (isset($address['country'])  ? $address['country'] : @$address['postcode']);
             $destinationAddress = [
                 'postalCode' =>   preg_replace('#[^a-zA-Z0-9]#i', '', (str_replace(' ', '', $destination['postcode']) ?: @$address['postcode'])),
-                'countryCode' => strtoupper(@$destination['country'] ?? @$address['country'] ?? $this->get_option('shipvista_origin_country')),
+                'countryCode' => strtoupper($country_code),
                 'state' => ($destination['state'] ?: ''),
                 'city' => ($destination['city'] ?: ''),
                 'streetAddress' => (substr($destination['address'], 0, 50) ?: ''),
@@ -142,7 +142,7 @@ trait SLSR_WcShipvistaRates
 
         foreach ($items as $item => $values) {
 
-            $quantity = @$values['quanity'] ?: 1;
+            $quantity = isset($values['quanity']) ?  $values['quantity'] : 1;
             $_product =  wc_get_product(($isAdmin == true ? $values->get_product_id() : $values['data']->get_id()));
             if (!$_product) {
                 continue;
@@ -328,8 +328,8 @@ trait SLSR_WcShipvistaRates
                                 //die(var_dump($list));
                                 if ($isAdmin == true) {
                                     $list['code'] = $rate['shippingService']['code'];
-                                    $list['carrierId'] = @$rate['shippingCarrierAccount']['id'];
-                                    $list['options'] = @$rate['options'];
+                                    $list['carrierId'] = isset($rate['shippingCarrierAccount']['id']) ? $rate['shippingCarrierAccount']['id'] : '';
+                                    $list['options'] = isset($rate['options']) ? $rate['options'] : '';
                                 }
 
                                 $shippingList[] = $list;

@@ -125,35 +125,40 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         public function calculate_shipping($package = array())
         {
 
-          if($this->enabled == 'yes'){
-          // include get available shipping rates
-          $rateList = $this->getShippingRates($package);
+          if ($this->enabled == 'yes') {
+            global $post;
+            if (is_object($post) && $post->post_type == 'page') {
+              // only calculate shipping rates on checkout and cart pages
+              if ($post->post_name == 'checkout' || $post->post_name == 'cart') {
 
-          $this->rateList = $rateList;
-          // include get available shipping rates
-          foreach ($rateList as $rateObject) {
-            $rateObject['meta'] = [];
-            unset($rateObject['rate']);
-            unset($rateObject['free']);
-            unset($rateObject['transit']);
-            unset($rateObject['realRate']);
-            $this->SLSR_pluginLogs('rateList_new', json_encode($rateObject));
-            $this->add_rate($rateObject);
-          }
+                // include get available shipping rates
+                $rateList = $this->getShippingRates($package);
 
-          global $post;
-          global $wp;
-          // get the post type
-          if (is_object($post) && $post->post_type == 'page') {
-            if ($post->post_name == 'checkout' && !isset($wp->query_vars['order-pay'])) {
-              if (count($rateList) < 2) {
-                wc_add_notice('Enter a valid shipping postal code to proceed', 'error');
-                return false;
+                $this->rateList = $rateList;
+                // include get available shipping rates
+                foreach ($rateList as $rateObject) {
+                  $rateObject['meta'] = [];
+                  unset($rateObject['rate']);
+                  unset($rateObject['free']);
+                  unset($rateObject['transit']);
+                  unset($rateObject['realRate']);
+                  $this->SLSR_pluginLogs('rateList_new', json_encode($rateObject));
+                  $this->add_rate($rateObject);
+                }
+
+                global $post;
+                global $wp;
+                // get the post type
+                if ($post->post_name == 'checkout' && !isset($wp->query_vars['order-pay'])) {
+                  if (count($rateList) < 2) {
+                    wc_add_notice('Enter a valid shipping postal code to proceed', 'error');
+                    return false;
+                  }
+                }
               }
             }
           }
         }
-      }
       }
     }
   }
@@ -170,32 +175,32 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
   function shipvista_validate_order($posted)
   {
-    if($this->enabled == 'yes'){
-    $packages = WC()->shipping->get_packages();
+    if ($this->enabled == 'yes') {
+      $packages = WC()->shipping->get_packages();
 
-    $chosen_methods = WC()->session->get('chosen_shipping_methods');
-    $choosenMethod = strtolower($chosen_methods[0]);
+      $chosen_methods = WC()->session->get('chosen_shipping_methods');
+      $choosenMethod = strtolower($chosen_methods[0]);
 
 
-    if (strtolower($choosenMethod) == 'shipvista') {
-      wc_add_notice(__("What's your postal code? It'll help us estimate shipping and delivery. ", "woocommerce"), 'error');
-      return false;
-    } else {
-      if (is_array($chosen_methods) && in_array('shipvista', $chosen_methods)) {
+      if (strtolower($choosenMethod) == 'shipvista') {
+        wc_add_notice(__("What's your postal code? It'll help us estimate shipping and delivery. ", "woocommerce"), 'error');
+        return false;
+      } else {
+        if (is_array($chosen_methods) && in_array('shipvista', $chosen_methods)) {
 
-        foreach ($packages as $i => $package) {
+          foreach ($packages as $i => $package) {
 
-          if ($chosen_methods[$i] != "shipvista") {
+            if ($chosen_methods[$i] != "shipvista") {
 
-            continue;
+              continue;
+            }
+
+            $Shipvista = new SLSR_Shipvista();
+            $rates = $Shipvista->calculate_shipping($package);
           }
-
-          $Shipvista = new SLSR_Shipvista();
-          $rates = $Shipvista->calculate_shipping($package);
         }
       }
     }
-  }
   }
 
 
@@ -341,7 +346,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     global $post;
     if (isset($_GET['section']) && $_GET['section'] == 'shipvista' || (isset($post->post_type) && $post->post_type == 'shop_order')) {
       wp_enqueue_style('shipvista_plugin_styles', plugins_url('assets/css/shipvista_admin_style.css', __FILE__));
-      wp_enqueue_style('shipvista_plugin_stylesw', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css');
+      //wp_enqueue_style('shipvista_plugin_stylesw', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css');
       wp_enqueue_style('shipvista_plugin_styles_full', plugins_url('assets/css/shipvista_style.css', __FILE__));
       wp_enqueue_script('shipvista_plugin_scripts2', plugins_url('assets/js/shipvista_admin_panel.js', __FILE__));
     }
