@@ -57,7 +57,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         use SLSR_WcShipvistaForms;
         use  SLSR_WcShipvistaRates;
         public $logStatus = false;
-
+        public $viewPage = false;
         public function __construct()
         {
           global $woocommerce;
@@ -72,10 +72,17 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
           // $this->init_settings();
           $this->enabled = isset($this->settings['enabled']) ? $this->settings['enabled'] : 'no';
           $this->title = isset($this->settings['title']) ? $this->settings['title'] : __('Shipvista live shipping rates', 'shipvista');
-          $this->checkToken();
-
           // check if the user has enabled google api auto fill loation
 
+          // check if its cart/checkout page to refresh token
+          global $post;
+          if (is_object($post) && $post->post_type == 'page') {
+            // only calculate shipping rates on checkout and cart pages
+            if ($post->post_name == 'checkout' || $post->post_name == 'cart') {
+              $this->checkToken();
+              $this->viewPage = $post->post_name;
+            }
+          }
         }
 
 
@@ -126,11 +133,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         {
 
           if ($this->enabled == 'yes') {
-            global $post;
-            if (is_object($post) && $post->post_type == 'page') {
-              // only calculate shipping rates on checkout and cart pages
-              if ($post->post_name == 'checkout' || $post->post_name == 'cart') {
-
+            if ($this->viewPage) {
                 // include get available shipping rates
                 $rateList = $this->getShippingRates($package);
 
@@ -146,16 +149,15 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                   $this->add_rate($rateObject);
                 }
 
-                global $post;
                 global $wp;
                 // get the post type
-                if ($post->post_name == 'checkout' && !isset($wp->query_vars['order-pay'])) {
+                if ($this->viewPage == 'checkout' && !isset($wp->query_vars['order-pay'])) {
                   if (count($rateList) < 2) {
                     wc_add_notice('Enter a valid shipping postal code to proceed', 'error');
                     return false;
                   }
                 }
-              }
+              
             }
           }
         }
@@ -357,9 +359,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
   function SLSR_include_front_end()
   {
-    global $post;
-    if (is_object($post) && $post->post_type == 'page') {
-      if ($post->post_name == 'checkout' || $post->post_name == 'cart') {
+    
+    if ($this->viewPage) {
         wp_enqueue_style('shipvista_plugin_styles_front', plugins_url('assets/css/shipvista_style.css', __FILE__));
         wp_register_script('shipvista_plugin_scripts_frontend', plugins_url('assets/js/shipvista_panel.js', __FILE__));
         wp_enqueue_script('shipvista_plugin_scripts_frontend');
@@ -375,7 +376,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             `;
         </script>
         <?php
-      }
+      
     }
     // if (is_object($post) && $post->post_type == 'page') {
     // }
@@ -386,9 +387,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
   add_action('wp_footer', 'SLSR_shipvista_custom_scripts');
   function SLSR_shipvista_custom_scripts()
   {
-    global $post;
-    if (is_object($post) && $post->post_type == 'page') {
-      if ($post->post_name == 'checkout') {
+      if ($this->viewPage == 'checkout') {
         SLSR_Shipvista();
         $ship = new SLSR_Shipvista;
         if ($ship->get_option('shipvista_google_places_api') == 'yes' && strlen($ship->get_option('shipvista_google_places_api_key')) > 10) { ?>
@@ -528,7 +527,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
     <?php }
       }
-    }
+    
   }
 
   function SLSR_Shipvista_postcode()
