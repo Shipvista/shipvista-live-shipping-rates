@@ -69,8 +69,9 @@ class SLSR_WcShipvistaBootstrap extends SLSR_Shipvista
 
         if (!empty($userToken) && $this->content['enabled'] == 'yes') { // user has logged in success and 
             // get user details
-            $userRequest = $this->shipvistaApi("/User", [], 'GET');
-            $accountBalance = @$userRequest['accountBalance']['currency'] . ' ' . $userRequest['accountBalance']['amount'];
+            $userRequest = $this->shipvistaApi("/User", '', 'GET');
+            
+            $accountBalance = isset($userRequest['accountBalance']) ? $userRequest['accountBalance']['currency'] . ' ' . $userRequest['accountBalance']['amount'] : 0;
             if (strlen($accountBalance) > 3) {
                 $this->update_option('shipvista_user_balance', $accountBalance);
             } else {

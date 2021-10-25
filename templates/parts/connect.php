@@ -11,7 +11,7 @@
 <div class="sv_container">
     <div class="sv_row">
 
-        <?php if ($this->content['postcode'] == '') { ?>
+        <?php if (count($this->content['user']) > 0 && $this->content['postcode'] == '') { ?>
             <!-- sv_alert missing shipper -->
             <div class="sv_col-12 sv_mb-3">
                 <div class="sv_alert sv_alert-warning">

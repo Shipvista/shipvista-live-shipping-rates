@@ -11,7 +11,7 @@
  * Requires at least: 5.0
  * Tested up to: 5.8.1
  * Stable tag: 1.0.0
- * Requires PHP: 7.0
+ * Requires PHP: 5.4.0
  * License: GPLv3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * woo:
@@ -57,7 +57,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         use SLSR_WcShipvistaForms;
         use  SLSR_WcShipvistaRates;
         public $logStatus = false;
-        public $viewPage = false;
+
         public function __construct()
         {
           global $woocommerce;
@@ -72,17 +72,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
           // $this->init_settings();
           $this->enabled = isset($this->settings['enabled']) ? $this->settings['enabled'] : 'no';
           $this->title = isset($this->settings['title']) ? $this->settings['title'] : __('Shipvista live shipping rates', 'shipvista');
+          $this->checkToken();
           // check if the user has enabled google api auto fill loation
 
-          // check if its cart/checkout page to refresh token
-          global $post;
-          if (is_object($post) && $post->post_type == 'page') {
-            // only calculate shipping rates on checkout and cart pages
-            if ($post->post_name == 'checkout' || $post->post_name == 'cart') {
-              $this->checkToken();
-              $this->viewPage = $post->post_name;
-            }
-          }
         }
 
 
@@ -132,34 +124,35 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         public function calculate_shipping($package = array())
         {
 
-          if ($this->enabled == 'yes') {
-            if ($this->viewPage) {
-              // include get available shipping rates
-              $rateList = $this->getShippingRates($package);
+          if($this->enabled == 'yes'){
+          // include get available shipping rates
+          $rateList = $this->getShippingRates($package);
 
-              $this->rateList = $rateList;
-              // include get available shipping rates
-              foreach ($rateList as $rateObject) {
-                $rateObject['meta'] = [];
-                unset($rateObject['rate']);
-                unset($rateObject['free']);
-                unset($rateObject['transit']);
-                unset($rateObject['realRate']);
-                $this->SLSR_pluginLogs('rateList_new', json_encode($rateObject));
-                $this->add_rate($rateObject);
-              }
+          $this->rateList = $rateList;
+          // include get available shipping rates
+          foreach ($rateList as $rateObject) {
+            $rateObject['meta'] = [];
+            unset($rateObject['rate']);
+            unset($rateObject['free']);
+            unset($rateObject['transit']);
+            unset($rateObject['realRate']);
+            $this->SLSR_pluginLogs('rateList_new', json_encode($rateObject));
+            $this->add_rate($rateObject);
+          }
 
-              global $wp;
-              // get the post type
-              if ($this->viewPage == 'checkout' && !isset($wp->query_vars['order-pay'])) {
-                if (count($rateList) < 2) {
-                  wc_add_notice('Enter a valid shipping postal code to proceed', 'error');
-                  return false;
-                }
+          global $post;
+          global $wp;
+          // get the post type
+          if (is_object($post) && $post->post_type == 'page') {
+            if ($post->post_name == 'checkout' && !isset($wp->query_vars['order-pay'])) {
+              if (count($rateList) < 2) {
+                wc_add_notice('Enter a valid shipping postal code to proceed', 'error');
+                return false;
               }
             }
           }
         }
+      }
       }
     }
   }
@@ -174,31 +167,30 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
   add_filter('woocommerce_shipping_methods', 'add_Shipvista');
 
-  function shipvista_validate_order($posted)
+  function shipvista_validate_order( $posted )
   {
-    if ($this->enabled == 'yes') {
-      $packages = WC()->shipping->get_packages();
 
-      $chosen_methods = WC()->session->get('chosen_shipping_methods');
-      $choosenMethod = strtolower($chosen_methods[0]);
+    $packages = WC()->shipping->get_packages();
+
+    $chosen_methods = WC()->session->get('chosen_shipping_methods');
+    $choosenMethod = strtolower($chosen_methods[0]);
 
 
-      if (strtolower($choosenMethod) == 'shipvista') {
-        wc_add_notice(__("What's your postal code? It'll help us estimate shipping and delivery. ", "woocommerce"), 'error');
-        return false;
-      } else {
-        if (is_array($chosen_methods) && in_array('shipvista', $chosen_methods)) {
+    if (strtolower($choosenMethod) == 'shipvista') {
+      wc_add_notice(__("What's your postal code? It'll help us estimate shipping and delivery. ", "woocommerce"), 'error');
+      return false;
+    } else {
+      if (is_array($chosen_methods) && in_array('shipvista', $chosen_methods)) {
 
-          foreach ($packages as $i => $package) {
+        foreach ($packages as $i => $package) {
 
-            if ($chosen_methods[$i] != "shipvista") {
+          if ($chosen_methods[$i] != "shipvista") {
 
-              continue;
-            }
-
-            $Shipvista = new SLSR_Shipvista();
-            $rates = $Shipvista->calculate_shipping($package);
+            continue;
           }
+
+          $Shipvista = new SLSR_Shipvista();
+          $rates = $Shipvista->calculate_shipping($package);
         }
       }
     }
@@ -358,24 +350,25 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
   function SLSR_include_front_end()
   {
-
-    if ($this->viewPage) {
-      wp_enqueue_style('shipvista_plugin_styles_front', plugins_url('assets/css/shipvista_style.css', __FILE__));
-      wp_register_script('shipvista_plugin_scripts_frontend', plugins_url('assets/js/shipvista_panel.js', __FILE__));
-      wp_enqueue_script('shipvista_plugin_scripts_frontend');
-      wp_localize_script('shipvista_plugin_scripts_fronend', 'my_ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+    global $post;
+    if (is_object($post) && $post->post_type == 'page') {
+      if ($post->post_name == 'checkout' || $post->post_name == 'cart') {
+        wp_enqueue_style('shipvista_plugin_styles_front', plugins_url('assets/css/shipvista_style.css', __FILE__));
+        wp_register_script('shipvista_plugin_scripts_frontend', plugins_url('assets/js/shipvista_panel.js', __FILE__));
+        wp_enqueue_script('shipvista_plugin_scripts_frontend');
+        wp_localize_script('shipvista_plugin_scripts_fronend', 'my_ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
 ?>
-      <script>
-        var loaderContainer = `
+        <script>
+          var loaderContainer = `
             <div class="sv_LoaderWrap">
               <div class="sv_LoaderCont">
               <img src="<?php echo  esc_attr(SHIPVISTA__PLUGIN_URL); ?>assets/img/loader.gif" class="sv_loaderImg">
               </div>
             </div>
             `;
-      </script>
-      <?php
-
+        </script>
+        <?php
+      }
     }
     // if (is_object($post) && $post->post_type == 'page') {
     // }
@@ -386,145 +379,148 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
   add_action('wp_footer', 'SLSR_shipvista_custom_scripts');
   function SLSR_shipvista_custom_scripts()
   {
-    if ($this->viewPage == 'checkout') {
-      SLSR_Shipvista();
-      $ship = new SLSR_Shipvista;
-      if ($ship->get_option('shipvista_google_places_api') == 'yes' && strlen($ship->get_option('shipvista_google_places_api_key')) > 10) { ?>
+    global $post;
+    if (is_object($post) && $post->post_type == 'page') {
+      if ($post->post_name == 'checkout') {
+        SLSR_Shipvista();
+        $ship = new SLSR_Shipvista;
+        if ($ship->get_option('shipvista_google_places_api') == 'yes' && strlen($ship->get_option('shipvista_google_places_api_key')) > 10) { ?>
 
 
 
-        <script async src="https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr($ship->get_option('shipvista_google_places_api_key')); ?>&libraries=places&callback=initMap">
-        </script>
+          <script async src="https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr($ship->get_option('shipvista_google_places_api_key')); ?>&libraries=places&callback=initMap">
+          </script>
 
-        <script>
-          // script for auto complete address
-          let autocomplete;
-          let shippingForm = 'billing';
+          <script>
+            // script for auto complete address
+            let autocomplete;
+            let shippingForm = 'billing';
 
-          function initMap() {
-
-
-            const center = {
-              lat: 50.064192,
-              lng: -130.605469
-            };
-            // Create a bounding box with sides ~10km away from the center point
-            const defaultBounds = {
-              north: center.lat + 0.1,
-              south: center.lat - 0.1,
-              east: center.lng + 0.1,
-              west: center.lng - 0.1,
-            };
-            const input = document.getElementById(shippingForm + "_address_1");
-            var country = document.getElementById(shippingForm + "_country").value;
-
-            const options = {
-              //bounds: defaultBounds,
-              componentRestrictions: {
-                country: [country]
-              },
-              fields: ["address_components", "place_id", "geometry", "icon", "name"],
-              //origin: center,
-              //strictBounds: false,
-              types: ["address"],
-            };
-            autocomplete = new google.maps.places.Autocomplete(input, options);
-            autocomplete.addListener("place_changed", onPlaceChanged);
-            // add event listener on country change
+            function initMap() {
 
 
-          }
+              const center = {
+                lat: 50.064192,
+                lng: -130.605469
+              };
+              // Create a bounding box with sides ~10km away from the center point
+              const defaultBounds = {
+                north: center.lat + 0.1,
+                south: center.lat - 0.1,
+                east: center.lng + 0.1,
+                west: center.lng - 0.1,
+              };
+              const input = document.getElementById(shippingForm + "_address_1");
+              var country = document.getElementById(shippingForm + "_country").value;
 
-          jQuery(function($) {
-            $(document.body).on('change', 'select[name=billing_country]', function() {
-              // Here run your function or code
-              initMap();
-            });
-
-            $(document.body).on('change', 'select[name=shipping_country]', function() {
-              // Here run your function or code
-              initMap();
-            });
-
-            document.getElementById('ship-to-different-address-checkbox').addEventListener('change', function() {
-              if (this.checked) {
-                shippingForm = 'shipping';
-              } else {
-                shippingForm = 'billing';
-              }
-              initMap();
-            });
+              const options = {
+                //bounds: defaultBounds,
+                componentRestrictions: {
+                  country: [country]
+                },
+                fields: ["address_components", "place_id", "geometry", "icon", "name"],
+                //origin: center,
+                //strictBounds: false,
+                types: ["address"],
+              };
+              autocomplete = new google.maps.places.Autocomplete(input, options);
+              autocomplete.addListener("place_changed", onPlaceChanged);
+              // add event listener on country change
 
 
-          });
-
-          function onPlaceChanged() {
-            // Get the place details from the autocomplete object.
-            const place = autocomplete.getPlace();
-            let address1 = "";
-            let postcode = "";
-            let state = '';
-            // Get each component of the address from the place details,
-            // and then fill-in the corresponding field on the form.
-            // place.address_components are google.maps.GeocoderAddressComponent objects
-            for (const component of place.address_components) {
-              const componentType = component.types[0];
-
-              switch (componentType) {
-                case "street_number": {
-                  address1 = `${component.long_name} ${address1}`;
-                  break;
-                }
-
-                case "route": {
-                  address1 += component.short_name;
-                  break;
-                }
-
-                case "postal_code": {
-                  postcode = `${component.long_name}${postcode}`;
-                  document.getElementById(shippingForm + '_postcode').value = postcode.replace(" ", '');
-                  break;
-                }
-
-                case "postal_code_suffix": {
-                  postcode = `${postcode}`;
-                  if (!postcode) {
-                    postcode = `${component.long_name}`;
-                  }
-                  break;
-                }
-                case "locality":
-                  var city = component.long_name;
-                  document.getElementById(shippingForm + '_city').value = city;
-                  jQuery('body').trigger('country_to_state_changed');
-                  break;
-
-                case "administrative_area_level_1": {
-                  state = component.short_name;
-                  document.getElementById(shippingForm + "_state").value = state;
-                  jQuery('body').trigger('country_to_state_changed');
-                  break;
-                }
-                case "country":
-                  break;
-              }
             }
-            //document.getElementById('billing_address_1').value = address1;
-            document.getElementById(shippingForm + "_address_1").value = address1;
-            document.getElementById(shippingForm + '_address_2').focus();
-            jQuery('body').trigger('country_to_state_changed');
-            jQuery('body').trigger('update_checkout');
-            // After filling the form with address components from the Autocomplete
-            // prediction, set cursor focus on the second address line to encourage
-            // entry of subpremise information such as apartment, unit, or floor number.
-            //address2Field.focus();
-            //sv_supmitPostalCode();
-          }
-          // write code here
-        </script>
+
+            jQuery(function($) {
+              $(document.body).on('change', 'select[name=billing_country]', function() {
+                // Here run your function or code
+                initMap();
+              });
+
+              $(document.body).on('change', 'select[name=shipping_country]', function() {
+                // Here run your function or code
+                initMap();
+              });
+
+              document.getElementById('ship-to-different-address-checkbox').addEventListener('change', function() {
+                if (this.checked) {
+                  shippingForm = 'shipping';
+                } else {
+                  shippingForm = 'billing';
+                }
+                initMap();
+              });
+
+
+            });
+
+            function onPlaceChanged() {
+              // Get the place details from the autocomplete object.
+              const place = autocomplete.getPlace();
+              let address1 = "";
+              let postcode = "";
+              let state = '';
+              // Get each component of the address from the place details,
+              // and then fill-in the corresponding field on the form.
+              // place.address_components are google.maps.GeocoderAddressComponent objects
+              for (const component of place.address_components) {
+                const componentType = component.types[0];
+
+                switch (componentType) {
+                  case "street_number": {
+                    address1 = `${component.long_name} ${address1}`;
+                    break;
+                  }
+
+                  case "route": {
+                    address1 += component.short_name;
+                    break;
+                  }
+
+                  case "postal_code": {
+                    postcode = `${component.long_name}${postcode}`;
+                    document.getElementById(shippingForm + '_postcode').value = postcode.replace(" ", '');
+                    break;
+                  }
+
+                  case "postal_code_suffix": {
+                    postcode = `${postcode}`;
+                    if (!postcode) {
+                      postcode = `${component.long_name}`;
+                    }
+                    break;
+                  }
+                  case "locality":
+                    var city = component.long_name;
+                    document.getElementById(shippingForm + '_city').value = city;
+                    jQuery('body').trigger('country_to_state_changed');
+                    break;
+
+                  case "administrative_area_level_1": {
+                    state = component.short_name;
+                    document.getElementById(shippingForm + "_state").value = state;
+                    jQuery('body').trigger('country_to_state_changed');
+                    break;
+                  }
+                  case "country":
+                    break;
+                }
+              }
+              //document.getElementById('billing_address_1').value = address1;
+              document.getElementById(shippingForm + "_address_1").value = address1;
+              document.getElementById(shippingForm + '_address_2').focus();
+              jQuery('body').trigger('country_to_state_changed');
+              jQuery('body').trigger('update_checkout');
+              // After filling the form with address components from the Autocomplete
+              // prediction, set cursor focus on the second address line to encourage
+              // entry of subpremise information such as apartment, unit, or floor number.
+              //address2Field.focus();
+              //sv_supmitPostalCode();
+            }
+            // write code here
+          </script>
 
     <?php }
+      }
     }
   }
 

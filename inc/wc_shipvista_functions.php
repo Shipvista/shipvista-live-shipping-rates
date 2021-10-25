@@ -261,8 +261,8 @@ trait SLSR_WcShipvistaFunctions
     if (!empty($expires)) {
       $dateExpires = date('Ymd', strtotime($expires));
       $today = date('Ymd');
-      $days = $today - $dateExpires;
-      if ($days > 3) {
+      // check days
+      if ($today > $dateExpires) {
         // refresh token
         $user = $this->get_option('shipvista_user_name');
         $pass = $this->get_option('shipvista_user_pass');
