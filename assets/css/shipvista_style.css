@@ -5,9 +5,9 @@
 .m-b-sm{
 display:none !important;
 }
-#billing_last_name_field, #billing_first_name_field, #shipping_first_name_field, #shipping_last_name_field, #wcal_gdpr_message_block{
+/* #billing_last_name_field, #billing_first_name_field, #shipping_first_name_field, #shipping_last_name_field, #wcal_gdpr_message_block{
 display: none !important;
-}
+} */
 .woocommerce-shipping-methods{
 position: relative;
 overflow:hidden;

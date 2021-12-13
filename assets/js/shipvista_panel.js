@@ -1,35 +1,6 @@
 // shipping page 
 var shipvistaShippingSellected = 0;
-jQuery(function ($) {
-    if (document.getElementById('billing_full_names')) {
-        document.getElementById('billing_full_names').addEventListener("keyup", event => {
-            var fn = document.getElementById('billing_full_names').value.trim().split(' ');
-            if (fn.length > 1) {
-                document.getElementById('billing_first_name').value = fn[0];
-                fn.splice(0, 1);
-                var lastname = fn.join(' ');
-                document.getElementById('billing_last_name').value = lastname;
-            }
-        });
-    }
-
-    if (document.getElementById('shipping_full_names')) {
-        document.getElementById('shipping_full_names').addEventListener("keyup", event => {
-            var fn = document.getElementById('shipping_full_names').value.trim().split(' ');
-            if (fn.length > 1) {
-                document.getElementById('shipping_first_name').value = fn[0];
-                fn.splice(0, 1);
-                var lastname = fn.join(' ');
-                document.getElementById('shipping_last_name').value = lastname;
-            }
-        });
-    }
-
-});
-
 var viewChange = 0;
-
-
 
 function shipvistaSelected(id) {
     if (id >= 0) {

@@ -261,7 +261,8 @@ trait SLSR_WcShipvistaFunctions
     if (!empty($expires)) {
       $dateExpires = date('Ymd', strtotime($expires));
       $today = date('Ymd');
-      if ($today >= $dateExpires) {
+      // check days
+      if ($today > $dateExpires) {
         // refresh token
         $user = $this->get_option('shipvista_user_name');
         $pass = $this->get_option('shipvista_user_pass');
@@ -269,7 +270,7 @@ trait SLSR_WcShipvistaFunctions
 
         if (array_key_exists('user_id', $refreshObject)) {
           $this->update_option('shipvista_api_token', $refreshObject['access_token']['tokenString']);
-          $this->update_option('shipvista_refresh_token', $refreshObject['shipvista_refresh_token']['tokenString']);
+          $this->update_option('shipvista_refresh_token', $refreshObject['refresh_token']['tokenString']);
           $this->update_option('shipvista_token_expires', $refreshObject['access_token']['expireAt']);
           $this->update_option('shipvista_plugin_errors', '');
           $this->SLSR_pluginLogs('Authentication', 'Token refreshed successfully');
@@ -393,7 +394,7 @@ trait SLSR_WcShipvistaFunctions
       'method' => $type,
       'body' => json_encode($post_fields),
       'headers' => $headers,
-      'sslverify' => 0
+      'sslverify' => 1
     ];
     $result = wp_remote_request($url, $body);
 

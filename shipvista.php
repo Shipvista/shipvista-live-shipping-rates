@@ -73,7 +73,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
           $this->enabled = isset($this->settings['enabled']) ? $this->settings['enabled'] : 'no';
           $this->title = isset($this->settings['title']) ? $this->settings['title'] : __('Shipvista live shipping rates', 'shipvista');
           $this->checkToken();
-
           // check if the user has enabled google api auto fill loation
 
         }
@@ -192,6 +191,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
           $Shipvista = new SLSR_Shipvista();
           $rates = $Shipvista->calculate_shipping($package);
+          break;
         }
       }
     }
