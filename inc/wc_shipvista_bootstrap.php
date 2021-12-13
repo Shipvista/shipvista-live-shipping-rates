@@ -123,8 +123,13 @@ class SLSR_WcShipvistaBootstrap extends SLSR_Shipvista
         $this->wooCountry = $split_country;
         // Country and state separated:
 
-        $this->carrier_settings['carrier_canada_post'] = (array) @json_decode($this->get_option('carrier_canada_post')) ?: ['expedited' => ['name' => 'Expedited Parcel', 'checked' => 0], 'regular' => ['name' => 'Regular Parcel', 'checked' => 0], 'xpresspost' => ['name' => 'Xpresspost', 'checked' => 0], 'priority' => ['name' => 'Priority', 'checked' => 0]];
-        $this->render('carriers.php');
+        $this->carrier_settings['carrier_canada_post'] = (array) @json_decode($this->get_option('carrier_canada_post')) ?: ['expedited' => ['name' => 'Expedited Parcel', 'checked' => 0], 'regular' => ['name' => 'Regular Parcel', 'checked' => 0], 'xpresspost' => ['name' => 'Xpresspost', 'checked' => 0], 'priority' => ['name' => 'Priority', 'checked' => 0], "priority worldwide envelope int'l" => ['name' => "Priority Worldwide Envelope INT'L", 'checked' => 0], "priority worldwide pak int'l" => ['name' => "Priority Worldwide pak INT'L", 'checked' => 0]];
+	if(!array_key_exists("priority worldwide pak int'l", $this->carrier_settings['carrier_canada_post'])){
+		$this->carrier_settings['carrier_canada_post']["priority worldwide envelope int'l"] = ['name' => "Priority Worldwide Envelope INT'L", 'checked' => 0]; 
+		$this->carrier_settings['carrier_canada_post']["priority worldwide pak int'l"] = ['name' => "Priority Worldwide pak INT'L", 'checked' => 0];
+	}
+        
+	$this->render('carriers.php');
     }
 
     public function parser()

@@ -191,6 +191,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
           $Shipvista = new SLSR_Shipvista();
           $rates = $Shipvista->calculate_shipping($package);
+          break;
         }
       }
     }

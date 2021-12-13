@@ -11,7 +11,7 @@
 
     <!-- include settings forms -->
     <div class="sv_d-none">
-        <?php echo print_r($this->requiredForms); // insert html form elements hidden in view 
+        <?php print_r($this->requiredForms); // insert html form elements hidden in view 
         ?>
     </div>
     <!-- include settings forms -->

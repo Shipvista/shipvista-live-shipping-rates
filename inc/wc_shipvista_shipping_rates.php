@@ -157,7 +157,7 @@ trait SLSR_WcShipvistaRates
 
             // set weight max to 30kg
             if ($weight > 30) {
-                $weight = 30;
+                $weight = $this->get_option('shipvista_dimension_weight') ?: 1;
             }
 
             $shippingList[] = [
@@ -278,7 +278,11 @@ trait SLSR_WcShipvistaRates
                     if (in_array($carrierName, $activeCarriers)) {
                         $serviceName = trim(str_replace(['USA', 'CAD'], '', $rate['shippingService']['name'])); //  reset for usa and canda
                         $transit = (float) $rate['shippingService']['expectedTransitTime'];
-                        $transit += $handlingTime;
+			if($transit >= 1){
+	                     $transit += $handlingTime;
+			} else {
+			     $transit = '';
+			}
 
                         foreach ($activeShippingRates as  $service) {
                             // count the service rates
@@ -408,12 +412,12 @@ trait SLSR_WcShipvistaRates
         }
 
 
-        $rates[$winners['fastest']]['label'] = 'Fastest:  ' .  $rates[$winners['fastest']]['label'] . ' - ' . $rates[$winners['fastest']]['transit'] . ' day' . ($rates[$winners['fastest']]['transit'] > 1 ? 's' : '');
+        $rates[$winners['fastest']]['label'] = 'Fastest:  ' .  $rates[$winners['fastest']]['label'] . ($rates[$winners['fastest']]['transit'] >= 1 ?  ' - ' . $rates[$winners['fastest']]['transit'] . ' day' . ($rates[$winners['fastest']]['transit'] > 1 ? 's' : '') : '');
         if ($winners['fastest'] != $winners['cheapest']) {
-            $rates[$winners['cheapest']]['label'] = 'Cheapest: ' . $rates[$winners['cheapest']]['label'] . ' - '  . $rates[$winners['cheapest']]['transit'] . ' day' . ($rates[$winners['cheapest']]['transit'] > 1 ? 's' : '');
+            $rates[$winners['cheapest']]['label'] = 'Cheapest: ' . $rates[$winners['cheapest']]['label'] . ($rates[$winners['cheapest']]['transit'] >= 1 ?  ' - '  . $rates[$winners['cheapest']]['transit'] . ' day' . ($rates[$winners['cheapest']]['transit'] > 1 ? 's' : '') : '');
         }
         if (count($rates) > 2) {
-            $rates[$winners['recommended']]['label'] = 'Recommended:  ' .  $rates[$winners['recommended']]['label'] . ' -  '  . $rates[$winners['recommended']]['transit'] . ' day' . ($rates[$winners['recommended']]['transit'] > 1 ? 's' : '');
+            $rates[$winners['recommended']]['label'] = 'Recommended:  ' .  $rates[$winners['recommended']]['label'] . ($rates[$winners['recommended']]['transit'] >= 1 ?  ' -  '  . $rates[$winners['recommended']]['transit'] . ' day' . ($rates[$winners['recommended']]['transit'] > 1 ? 's' : '') : '');
             if ($winners['recommended'] !== '') {
                 $newArr[] = $rates[$winners['recommended']];
             }
@@ -426,7 +430,7 @@ trait SLSR_WcShipvistaRates
             if ($key == $winners['cheapest'] || $key == $winners['recommended'] || $key == $winners['fastest']) {
                 continue;
             }
-            $rate['label'] =  $rate['label'] . ' - '  . $rate['transit'] . ' day' . ($rate['transit'] > 1 ? 's' : '');
+            $rate['label'] =  $rate['label'] . ($rates['transit'] >= 1 ?  ' - '  . $rate['transit'] . ' day' . ($rate['transit'] > 1 ? 's' : '') : '');
             $newArr[] =  $rate;
         }
 
