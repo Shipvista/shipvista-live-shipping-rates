@@ -6,11 +6,11 @@
  * Description: Display live shipping rates to customers on cart/checkout pages, print labels, and track orders with Shipvista's free live shipping rates plugin. Fully customizable to suit your every shipping needs. 
  * Author:  Shipvista
  * Author URI: http://www.shipvista.com
- * Version: 1.0.0
+ * Version: 2.0.0
  * Tags: shipping, delivery, logistics, woocomemrce, free shipping, live rates, canada post, shipvista
  * Requires at least: 5.0
- * Tested up to: 5.8.1
- * Stable tag: 1.0.0
+ * Tested up to: 5.9
+ * Stable tag: 2.0.0
  * Requires PHP: 5.4.0
  * License: GPLv3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -124,35 +124,34 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         public function calculate_shipping($package = array())
         {
 
-          if($this->enabled == 'yes'){
-          // include get available shipping rates
-          $rateList = $this->getShippingRates($package);
+          if ($this->enabled == 'yes') {
+            // include get available shipping rates
+            $rateList = $this->getShippingRates($package);
+            $this->rateList = $rateList;
+            // include get available shipping rates
+            foreach ($rateList as $rateObject) {
+              // $rateObject['meta_data'] = ['tosam' => 'Yes', 'How' => 'Yes'];
+              unset($rateObject['rate']);
+              unset($rateObject['free']);
+              unset($rateObject['transit']);
+              unset($rateObject['realRate']);
+              $this->SLSR_pluginLogs('rateList_new', json_encode($rateObject));
+              $this->add_rate($rateObject);
+            }
 
-          $this->rateList = $rateList;
-          // include get available shipping rates
-          foreach ($rateList as $rateObject) {
-            $rateObject['meta'] = [];
-            unset($rateObject['rate']);
-            unset($rateObject['free']);
-            unset($rateObject['transit']);
-            unset($rateObject['realRate']);
-            $this->SLSR_pluginLogs('rateList_new', json_encode($rateObject));
-            $this->add_rate($rateObject);
-          }
-
-          global $post;
-          global $wp;
-          // get the post type
-          if (is_object($post) && $post->post_type == 'page') {
-            if ($post->post_name == 'checkout' && !isset($wp->query_vars['order-pay'])) {
-              if (count($rateList) < 2) {
-                wc_add_notice('Enter a valid shipping postal code to proceed', 'error');
-                return false;
+            global $post;
+            global $wp;
+            // get the post type
+            if (is_object($post) && $post->post_type == 'page') {
+              if ($post->post_name == 'checkout' && !isset($wp->query_vars['order-pay'])) {
+                if (count($rateList) < 2) {
+                  wc_add_notice('Enter a valid shipping postal code to proceed', 'error');
+                  return false;
+                }
               }
             }
           }
         }
-      }
       }
     }
   }
@@ -167,7 +166,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
   add_filter('woocommerce_shipping_methods', 'add_Shipvista');
 
-  function shipvista_validate_order( $posted )
+  function shipvista_validate_order($posted)
   {
 
     $packages = WC()->shipping->get_packages();
@@ -176,25 +175,24 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     $choosenMethod = strtolower($chosen_methods[0]);
 
 
-    if (strtolower($choosenMethod) == 'shipvista') {
-      wc_add_notice(__("What's your postal code? It'll help us estimate shipping and delivery. ", "woocommerce"), 'error');
-      return false;
-    } else {
-      if (is_array($chosen_methods) && in_array('shipvista', $chosen_methods)) {
+    // if (strtolower($choosenMethod) == 'shipvista') {
+    //   wc_add_notice(__("What's your postal code? It'll help us estimate shipping and delivery. ", "woocommerce"), 'error');
+    //   return false;
+    // } else {
+    if (is_array($chosen_methods) && in_array('shipvista', $chosen_methods)) {
 
-        foreach ($packages as $i => $package) {
+      foreach ($packages as $i => $package) {
 
-          if ($chosen_methods[$i] != "shipvista") {
-
-            continue;
-          }
-
-          $Shipvista = new SLSR_Shipvista();
-          $rates = $Shipvista->calculate_shipping($package);
-          break;
+        if ($chosen_methods[$i] != "shipvista") {
+          continue;
         }
+
+        $Shipvista = new SLSR_Shipvista();
+        $rates = $Shipvista->calculate_shipping($package);
+        break;
       }
     }
+    // }
   }
 
 
@@ -285,7 +283,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
           }
 
           $result = $Shipvista->shipvistaApi('/Shipments', $requestobject, 'POST');
-
+          
           // send email to customer that their label has been printed successfully
           if ($result['status'] == true && isset($result['data'])) {
             $data = $result['data'];
@@ -737,4 +735,36 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
   add_action('woocommerce_after_checkout_validation', 'shipvista_validate_order', 10);
   add_action('woocommerce_update_order', 'shipvista_update_order', 10);
+}
+
+add_filter('woocommerce_locate_template', 'woo_adon_plugin_template', 1, 3);
+function woo_adon_plugin_template($template, $template_name, $template_path)
+{
+  global $woocommerce;
+  $_template = $template;
+  if (!$template_path){
+    $template_path = $woocommerce->template_url;
+  }
+  
+  $plugin_path  = untrailingslashit(plugin_dir_path(__FILE__))  . '/templates/woocommerce/';
+  // die(var_dump($template_name, $template_path, $template, $plugin_path));
+
+  // Look within passed path within the theme - this is priority
+  $template = locate_template(
+    array(
+      $template_path . $template_name,
+      $template_name
+    )
+  );
+
+  if (file_exists($plugin_path . $template_name)){
+    $template = $plugin_path . $template_name;
+  }
+
+  if (!$template){
+    $template = $_template;
+  }
+
+
+  return $template;
 }

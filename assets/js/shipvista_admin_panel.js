@@ -231,26 +231,36 @@ function shipvista_unlinkAccount() {
 
 function shipvista_carrierSelectOption(carrier, key) {
     if (!carrier || !key) return false;
-    var input = _id(key);
+    var id = carrier + '_' + key;
+    var input = _id(id);
     var carrierStatus = _id(carrier).checked;
-    if (carrierStatus == true) {
-        var status = _id(key).checked ? 1 : 0;
+    if (carrierStatus != true) {
+        _id(carrier).checked = true;
+    }
+        // var status = _id(key).checked ? 1 : 0;
 
         input.disabled = false;
-        // get name
         var name = input.getAttribute('data-shipvista-name');
-        var key = input.getAttribute('name');
+        if(input.checked == true){
+        // get name
         // set values
-        sv_carrierSettings[carrier][key].name = name;
-        sv_carrierSettings[carrier][key]['checked'] = status;
+        sv_carrierSettings[carrier].push(name);
+        // sv_carrierSettings[carrier][key]['checked'] = status;
 
+        } else {
+            // remove it from the table
+            if(sv_carrierSettings[carrier].indexOf(name) !== false){
+                sv_carrierSettings[carrier].splice(sv_carrierSettings[carrier].indexOf(name), 1);
+            }
+        }
+
+        
         jsonText = JSON.stringify(sv_carrierSettings[carrier]);
         _id(idAppend + carrier).value = jsonText;
-        console.log(jsonText)
-    } else {
-        _id(key).checked = false;
-        alertBar('Please enable carrier to select this method', 'bg-warning');
-    }
+    // } else {
+    //     _id(key).checked = false;
+    //     alertBar('Please enable carrier to select this method', 'bg-warning');
+    // }
 
 }
 
@@ -268,13 +278,12 @@ function shipvista_toggleCarrieSubs(carrier, act) {
                 input.disabled = false;
                 // get name
                 var name = input.getAttribute('data-shipvista-name');
-                var key = input.getAttribute('name');
+                // var key = input.getAttribute('name');
                 // set values
-                sv_carrierSettings[carrier][key].name = name;
-                sv_carrierSettings[carrier][key]['checked'] = 1;
+                sv_carrierSettings[carrier].push(name);
+                // sv_carrierSettings[carrier][key]['checked'] = 1;
             } else {
                 input.disabled = true;
-
             }
         }
     }

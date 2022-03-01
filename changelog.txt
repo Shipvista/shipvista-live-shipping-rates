@@ -2,3 +2,11 @@
 
 = 1.0.0 =
 * Initial release.
+
+= 2.0.0 =
+* Add UPS shipping rates
+* Added more Candapost rate options
+* Fixed shipping card design
+* Added log option
+* Added ability to use your personal carrier accounts to obtain rates.
+* Remove front end management with JS 

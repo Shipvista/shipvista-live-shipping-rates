@@ -1,0 +1,116 @@
+{
+    "CanadaPost": [
+        {
+            "carrier": "CanadaPost",
+            "carrier_code": "DOM.EP",
+            "carrier_option": "Expedited Parcel"
+        },
+        {
+            "carrier": "CanadaPost",
+            "carrier_code": "DOM.PC",
+            "carrier_option": "Priority"
+        },
+        {
+            "carrier": "CanadaPost",
+            "carrier_code": "DOM.RP",
+            "carrier_option": "Regular Parcel"
+        },
+        {
+            "carrier": "CanadaPost",
+            "carrier_code": "DOM.XP",
+            "carrier_option": "Xpresspost"
+        },
+        {
+            "carrier": "CanadaPost",
+            "carrier_code": "USA.EP",
+            "carrier_option": "Expedited Parcel USA"
+        },
+        {
+            "carrier": "CanadaPost",
+            "carrier_code": "USA.PW.ENV",
+            "carrier_option": "Priority Worldwide envelope USA"
+        },
+        {
+          "carrier": "CanadaPost",
+          "carrier_code": "USA.PW.PARCEL",
+          "carrier_option": "Priority Worldwide parcel USA"
+        },
+        {
+            "carrier": "CanadaPost",
+            "carrier_code": "USA.PW.PAK",
+            "carrier_option": "Priority Worldwide pak USA"
+        },
+        {
+            "carrier": "CanadaPost",
+            "carrier_code": "USA.SP.AIR",
+            "carrier_option": "Small Packet USA Air"
+        },
+        {
+            "carrier": "CanadaPost",
+            "carrier_code": "USA.TP",
+            "carrier_option": "Tracked Packet - USA"
+        },
+        {
+            "carrier": "CanadaPost",
+            "carrier_code": "USA.XP",
+            "carrier_option": "Xpresspost USA"
+        },
+        {
+            "carrer" : "CanadaPost",
+            "carrier_code" : "",
+            "carrier_option" : "Priority Worldwide Parcel"
+        }
+    ],
+    "UPS": [
+        {
+            "carrier": "UPS",
+            "carrier_code": "14",
+            "carrier_option": "UPS Express® Early"
+        },
+        {
+            "carrier": "UPS",
+            "carrier_code": "01",
+            "carrier_option": "UPS Express®"
+        },
+        {
+            "carrier": "UPS",
+            "carrier_code": "13",
+            "carrier_option": "UPS Express Saver®"
+        },
+        {
+            "carrier": "UPS",
+            "carrier_code": "02",
+            "carrier_option": "UPS Expedited™"
+        },
+        {
+            "carrier": "UPS",
+            "carrier_code": "11",
+            "carrier_option": "UPS® Standard"
+        },
+        {
+            "carrier": "UPS",
+            "carrier_code": "14",
+            "carrier_option": "UPS Express® Early"
+        },
+        {
+            "carrier": "UPS",
+            "carrier_code": "54",
+            "carrier_option": "UPS Express Early to the U.S."
+          },
+          {
+            "carrier": "UPS",
+            "carrier_code": "07",
+            "carrier_option": "UPS Worldwide Express®"
+          },
+          {
+            "carrier": "UPS",
+            "carrier_code": "12",
+            "carrier_option": "UPS 3 Day Select®"
+          },
+          {
+            "carrier": "UPS",
+            "carrier_code": "08",
+            "carrier_option": "UPS Worldwide Expedited®"
+          }
+    ]
+}

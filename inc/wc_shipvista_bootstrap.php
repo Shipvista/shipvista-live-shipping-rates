@@ -65,7 +65,12 @@ class SLSR_WcShipvistaBootstrap extends SLSR_Shipvista
         $this->content['user'] = [];
         $this->content['enabled'] = $this->enabled;
         $this->content['verificationLink'] = SHIPVISTA__PLUGIN_SITE . '/wp-admin/admin.php?page=wc-settings&tab=shipping&section=shipvista&wcs_page=connect&signup=true';
-
+        
+        $this->content['carrier'] = false;
+        $carrier = $this->getActiveCarrierMethods();
+        if(is_array($carrier) && count($carrier) > 0){
+            $this->content['carrier'] = 'yes';
+        }
 
         if (!empty($userToken) && $this->content['enabled'] == 'yes') { // user has logged in success and 
             // get user details
@@ -122,12 +127,25 @@ class SLSR_WcShipvistaBootstrap extends SLSR_Shipvista
         $split_country = explode(":", $store_raw_country);
         $this->wooCountry = $split_country;
         // Country and state separated:
+        $carriers = json_decode(file_get_contents(SHIPVISTA__PLUGIN_DIR . 'assets/config/carriers.json'), true);
 
-        $this->carrier_settings['carrier_canada_post'] = (array) @json_decode($this->get_option('carrier_canada_post')) ?: ['expedited' => ['name' => 'Expedited Parcel', 'checked' => 0], 'regular' => ['name' => 'Regular Parcel', 'checked' => 0], 'xpresspost' => ['name' => 'Xpresspost', 'checked' => 0], 'priority' => ['name' => 'Priority', 'checked' => 0], "priority worldwide envelope int'l" => ['name' => "Priority Worldwide Envelope INT'L", 'checked' => 0], "priority worldwide pak int'l" => ['name' => "Priority Worldwide pak INT'L", 'checked' => 0]];
-	if(!array_key_exists("priority worldwide pak int'l", $this->carrier_settings['carrier_canada_post'])){
-		$this->carrier_settings['carrier_canada_post']["priority worldwide envelope int'l"] = ['name' => "Priority Worldwide Envelope INT'L", 'checked' => 0]; 
-		$this->carrier_settings['carrier_canada_post']["priority worldwide pak int'l"] = ['name' => "Priority Worldwide pak INT'L", 'checked' => 0];
-	}
+        $this->carrier_settings['CanadaPost'] = (array) @json_decode($this->get_option('CanadaPost')) ?: [];
+        $this->carrier_settings['UPS'] = (array) @json_decode($this->get_option('UPS')) ?: [];
+        $merge = array_merge($this->carrier_settings['CanadaPost'], $this->carrier_settings['UPS']);
+        foreach ($carriers as $key => $carrier) {
+            foreach($carrier as $k => $item){
+                $carriers[$key][$k]['checked']  = false;
+                if(in_array($item['carrier_option'], $merge)){
+                    $carriers[$key][$k]['checked'] = true;
+                }
+            }
+        }
+	// if(!array_key_exists("priority worldwide pak int'l", $this->carrier_settings['carrier_canada_post'])){
+	// 	$this->carrier_settings['carrier_canada_post']["priority worldwide envelope int'l"] = ['name' => "Priority Worldwide Envelope INT'L", 'checked' => 0]; 
+	// 	$this->carrier_settings['carrier_canada_post']["priority worldwide pak int'l"] = ['name' => "Priority Worldwide pak INT'L", 'checked' => 0];
+	// }
+    $this->carriers = $carriers;
+    
         
 	$this->render('carriers.php');
     }
