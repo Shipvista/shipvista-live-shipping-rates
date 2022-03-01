@@ -6,11 +6,21 @@ use Exception;
 
 trait SLSR_WcShipvistaFunctions
 {
-  public $registeredCarriers = ['canada_post'];
+  public $registeredCarriers = ['CanadaPost', 'UPS'];
   private $baseApiUrl = 'https://api.shipvista.com/api/';
   public $apiHttpErrorCode;
   public $errorLogKeys = ['Authentication'];
   public $orderId;
+  public $carrierDetails = [
+    'CanadaPost' => [
+      'name' => 'Canada Post',
+      'image' => SHIPVISTA__PLUGIN_URL . 'assets/img/canada_post.jpg'
+    ],
+    'UPS' => [
+      'name' => 'UPS',
+      'image' => SHIPVISTA__PLUGIN_URL . 'assets/img/ups_logo.png'
+    ]
+  ];
 
   function generatePdfFromByte($order_id, $byte)
   {
@@ -288,7 +298,7 @@ trait SLSR_WcShipvistaFunctions
     // check to see if logging is turned on
     if ($this->logStatus) {
       if (strlen($error) > 0) {
-        $errorFile = fopen(SHIPVISTA__PLUGIN_DIR . "/assets/logs/" . strtolower($title) . "_logs.txt", "a+") or die("Unable to open file!");
+        $errorFile = fopen(SHIPVISTA__PLUGIN_DIR . "assets/logs/" . strtolower($title) . "_logs.txt", "a+") or die(SHIPVISTA__PLUGIN_DIR . "assets/logs/" . strtolower($title) . "_logs.txt" . " | Unable to open file!");
         $txt = date('Y-m-d h:i:s') . ": $error, \n";
         fwrite($errorFile, $txt);
         fclose($errorFile);
@@ -319,16 +329,19 @@ trait SLSR_WcShipvistaFunctions
       $shippingPrice *= $totaltems;
     }
     $title = 'Flat Rate';
+    $rateList = [];
     if ($missingAddress != false) {
       $title = 'Address: Enter a valid postal code to get shipping cost.';
       $shippingPrice = '';
+    } else {
+      $rateList[] = [
+        'label' => $title,
+        'cost' => $shippingPrice,
+        'meta_data' => [
+          'is_default' => true
+        ]
+      ];
     }
-    $rateList[] = [
-      'label' => $title,
-      'cost' => $shippingPrice,
-      'image' => '',
-      'transit' => ''
-    ];
     return $rateList;
   }
 
@@ -341,17 +354,17 @@ trait SLSR_WcShipvistaFunctions
   {
     $availableMethods = [];
     foreach ($this->registeredCarriers as $carrier) {
-      if ($this->get_option("carrier_" . $carrier . "_enabled") == true) {
+      if ($this->get_option($carrier . "_enabled") == true) {
 
-        $carrierInputName = 'carrier_'  .  $carrier;
+        $carrierInputName = $carrier;
         $carrierMethods = (array) json_decode($this->get_option($carrierInputName));
         $activeCarrier = str_replace('_', ' ', strtolower($carrier));
-        $availableMethods[$activeCarrier] = [];
-        foreach ($carrierMethods as $key => $value) {
-          if ($value->checked == true) {
-            $availableMethods[$activeCarrier][] = $value->name;
-          }
-        }
+        $availableMethods[$activeCarrier] = $carrierMethods;
+        // foreach ($carrierMethods as $key => $value) {
+        //   if ($value->checked == true) {
+        //     $availableMethods[$activeCarrier][] = $value->name;
+        //   }
+        // }
       }
     }
     return $availableMethods;

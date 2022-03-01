@@ -48,7 +48,7 @@ trait SLSR_WcShipvistaRates
                 $apiObject = [
                     'FromAddress' => $fromAddress,
                     'ToAddress' => $destinationAddress,
-                    "unitOfMeasurement" => "IMPERIAL",
+                    "unitOfMeasurement" => "METRIC",
                     "currency" => $this->get_option('shipvista_user_currency') ?? $this->get_option('woocommerce_currency') ?? 'USD',
                     "lineItems" => $itemList
                     //"carrierServiceTypeList" => []
@@ -65,7 +65,7 @@ trait SLSR_WcShipvistaRates
                     $rateResults = $session;
                 }
 
-                if (array_key_exists('status', $rateResults) && $rateResults['status'] == true && count($rateResults['data']) > 0) {
+                if (array_key_exists('data', $rateResults) && count($rateResults['data']) > 0) {
                     // set various session variables
 
                     if (!$session) {
@@ -206,6 +206,16 @@ trait SLSR_WcShipvistaRates
         }
     }
 
+
+    public function mergeActiveRates( array &$rates )
+    {
+        $rate = [];
+        foreach ($rates as $key => $value) {
+            array_merge($rate, $value);
+        }
+        $rates = $rate;
+    }
+
     /**
      * Structure shipping rate to get rates for display
      */
@@ -255,6 +265,9 @@ trait SLSR_WcShipvistaRates
                         'label' =>   'Free shipping' . ($handlingTime > 0 ? ': in ' . $handlingTime . ' day' . ($handlingTime > 1 ? 's' : '')  : ''),
                         'cost' => 0,
                         'transit' => $handlingTime,
+                        'meta_data' => [
+                            'is_default' => false
+                        ]
                     ];
                 }
             } else {
@@ -266,26 +279,34 @@ trait SLSR_WcShipvistaRates
 
                 // get a list of check methods allowed
                 $activeShippingRates = $this->getActiveCarrierMethods();
+                $this->SLSR_pluginLogs('carriers_rates_raw', json_encode($activeShippingRates));
                 $activeCarriers = array_keys($activeShippingRates);
-
+                
                 $this->structCarriers($activeCarriers);
-
+                $this->SLSR_pluginLogs('carriers', json_encode($activeCarriers));
+                $this->SLSR_pluginLogs('carriers_rates', json_encode($activeShippingRates));
+                $this->SLSR_pluginLogs('carriers_rates_all', json_encode($rates));
+                
                 $labelList = [];
                 foreach ($rates as $rate) {
+                    $this->SLSR_pluginLogs('carriers_rates_list', json_encode($rate));
                     $rate = (array) $rate;
                     $carrierName = trim(strtolower($rate['shippingCarrierAccount']['carrier_code']));
 
                     if (in_array($carrierName, $activeCarriers)) {
-                        $serviceName = trim(str_replace(['USA', 'CAD'], '', $rate['shippingService']['name'])); //  reset for usa and canda
-                        $transit = (float) $rate['shippingService']['expectedTransitTime'];
-			if($transit >= 1){
-	                     $transit += $handlingTime;
-			} else {
-			     $transit = '';
-			}
+                        $serviceName = trim($rate['shippingService']['name']); //  reset for usa and canda
+                        // $serviceName = trim(str_replace(['USA', 'CAD'], '', $rate['shippingService']['name'])); //  reset for usa and canda
+                        $transit = (int) $rate['shippingService']['expectedTransitTime'];
+                        if ($transit > 0) {
+                            $transit += $handlingTime;
+                        } else {
+                            $transit = '';
+                        }
 
                         foreach ($activeShippingRates as  $service) {
                             // count the service rates
+                            $lowerService = array_map('strtolower', array_map('trim', $service));
+                            $this->SLSR_pluginLogs('carriers_rates_options', in_array(strtolower($serviceName), array_map('strtolower', array_map('trim', $service))) .' || '.strtolower($serviceName) .' == ' . json_encode($lowerService));
 
                             if (in_array(strtolower($serviceName), array_map('strtolower', array_map('trim', $service)))) {
                                 if (in_array($serviceName, $labelList)) {
@@ -323,17 +344,21 @@ trait SLSR_WcShipvistaRates
                                     'id' => 'shipvista_' . $rate['shippingService']['code'],
                                     'label' => $serviceName,
                                     'cost' => (float)$rateAmount,
-                                    'transit' => $transit,
-                                    'free' => $isFreeShipping,
-                                    'rate' => $freeRate,
-                                    'realRate' => $originalRate,
-
+                                    'meta_data' => [
+                                        'transit' => $transit,
+                                        'free' => $isFreeShipping,
+                                        'rate' => $freeRate,
+                                        'is_default' => false,
+                                        'attribute' => '',
+                                        'realRate' => $originalRate,
+                                        'carrier' => (isset($this->carrierDetails[$carrierName]) ? $this->carrierDetails[$carrierName]['name'] : $serviceName)
+                                    ]
                                 ];
                                 //die(var_dump($list));
                                 if ($isAdmin == true) {
-                                    $list['code'] = $rate['shippingService']['code'];
-                                    $list['carrierId'] = isset($rate['shippingCarrierAccount']['id']) ? $rate['shippingCarrierAccount']['id'] : '';
-                                    $list['options'] = isset($rate['options']) ? $rate['options'] : '';
+                                    $list['meta_data']['code'] = $rate['shippingService']['code'];
+                                    $list['meta_data']['carrierId'] = isset($rate['shippingCarrierAccount']['id']) ? $rate['shippingCarrierAccount']['id'] : '';
+                                    $list['meta_data']['options'] = isset($rate['options']) ? $rate['options'] : '';
                                 }
 
                                 $shippingList[] = $list;
@@ -412,12 +437,15 @@ trait SLSR_WcShipvistaRates
         }
 
 
-        $rates[$winners['fastest']]['label'] = 'Fastest:  ' .  $rates[$winners['fastest']]['label'] . ($rates[$winners['fastest']]['transit'] >= 1 ?  ' - ' . $rates[$winners['fastest']]['transit'] . ' day' . ($rates[$winners['fastest']]['transit'] > 1 ? 's' : '') : '');
+        $rates[$winners['fastest']]['meta_data']['attribute'] = 'Fastest';// .  $rates[$winners['fastest']]['label'] . ($rates[$winners['fastest']]['transit'] >= 1 ?  ' - ' . $rates[$winners['fastest']]['transit'] . ' day' . ($rates[$winners['fastest']]['transit'] > 1 ? 's' : '') : '');
+        // $rates[$winners['fastest']]['label'] = 'Fastest:  ' .  $rates[$winners['fastest']]['label'] . ($rates[$winners['fastest']]['transit'] >= 1 ?  ' - ' . $rates[$winners['fastest']]['transit'] . ' day' . ($rates[$winners['fastest']]['transit'] > 1 ? 's' : '') : '');
         if ($winners['fastest'] != $winners['cheapest']) {
-            $rates[$winners['cheapest']]['label'] = 'Cheapest: ' . $rates[$winners['cheapest']]['label'] . ($rates[$winners['cheapest']]['transit'] >= 1 ?  ' - '  . $rates[$winners['cheapest']]['transit'] . ' day' . ($rates[$winners['cheapest']]['transit'] > 1 ? 's' : '') : '');
+            // $rates[$winners['cheapest']]['label'] = 'Cheapest: ' . $rates[$winners['cheapest']]['label'] . ($rates[$winners['cheapest']]['transit'] >= 1 ?  ' - '  . $rates[$winners['cheapest']]['transit'] . ' day' . ($rates[$winners['cheapest']]['transit'] > 1 ? 's' : '') : '');
+            $rates[$winners['cheapest']]['meta_data']['attribute'] = 'Cheapest';// . $rates[$winners['cheapest']]['label'] . ($rates[$winners['cheapest']]['transit'] >= 1 ?  ' - '  . $rates[$winners['cheapest']]['transit'] . ' day' . ($rates[$winners['cheapest']]['transit'] > 1 ? 's' : '') : '');
         }
         if (count($rates) > 2) {
-            $rates[$winners['recommended']]['label'] = 'Recommended:  ' .  $rates[$winners['recommended']]['label'] . ($rates[$winners['recommended']]['transit'] >= 1 ?  ' -  '  . $rates[$winners['recommended']]['transit'] . ' day' . ($rates[$winners['recommended']]['transit'] > 1 ? 's' : '') : '');
+            // $rates[$winners['recommended']]['label'] = 'Recommended:  ' .  $rates[$winners['recommended']]['label'] . ($rates[$winners['recommended']]['transit'] >= 1 ?  ' -  '  . $rates[$winners['recommended']]['transit'] . ' day' . ($rates[$winners['recommended']]['transit'] > 1 ? 's' : '') : '');
+            $rates[$winners['recommended']]['meta_data']['attribute'] = 'Recommended';// .  $rates[$winners['recommended']]['label'] . ($rates[$winners['recommended']]['transit'] >= 1 ?  ' -  '  . $rates[$winners['recommended']]['transit'] . ' day' . ($rates[$winners['recommended']]['transit'] > 1 ? 's' : '') : '');
             if ($winners['recommended'] !== '') {
                 $newArr[] = $rates[$winners['recommended']];
             }
@@ -430,7 +458,7 @@ trait SLSR_WcShipvistaRates
             if ($key == $winners['cheapest'] || $key == $winners['recommended'] || $key == $winners['fastest']) {
                 continue;
             }
-            $rate['label'] =  $rate['label'] . ($rates['transit'] >= 1 ?  ' - '  . $rate['transit'] . ' day' . ($rate['transit'] > 1 ? 's' : '') : '');
+            $rate['label'] =  $rate['label'] . (isset($rates['transit']) && $rates['transit'] >= 1 ?  ' - '  . $rate['transit'] . ' day' . ($rate['transit'] > 1 ? 's' : '') : '');
             $newArr[] =  $rate;
         }
 

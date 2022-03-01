@@ -55,6 +55,30 @@ trait SLSR_WcShipvistaForms
                 'class' => 'form-control mb-3 form-control-sm',
                 'desc_tip'    => true,
             ),
+            'CanadaPost' => array(
+                'title' => __('Default Carrier', 'shipvista'),
+                'type'        => 'hidden',
+                'class' => 'form-control mb-3 form-control-sm',
+                'desc_tip'    => true,
+            ),
+            'CanadaPost_enabled' => array(
+                'title' => __('Enable Canada Post', 'shipvista'),
+                'type'        => 'hidden',
+                'class' => 'form-control mb-3 form-control-sm',
+                'desc_tip'    => true,
+            ),
+            'UPS' => array(
+                'title' => __('Default Carrier', 'shipvista'),
+                'type'        => 'hidden',
+                'class' => 'form-control mb-3 form-control-sm',
+                'desc_tip'    => true,
+            ),
+            'UPS_enabled' => array(
+                'title' => __('Enable Canada Post', 'shipvista'),
+                'type'        => 'hidden',
+                'class' => 'form-control mb-3 form-control-sm',
+                'desc_tip'    => true,
+            ),
         );
     }
 

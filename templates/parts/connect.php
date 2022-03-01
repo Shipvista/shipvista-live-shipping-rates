@@ -57,7 +57,7 @@
                                     <p>Turn on carriers and select shipping methods</p>
                                     <div>
                                         <div class="sv_float-right"><a href="<?php echo $this->pageLink . '&wcs_page=carriers' ?>"> <small> <i class="dashicons dashicons-arrow-right-alt"></i></small> </a></div>
-                                        <?php echo ($this->get_option('carrier_canada_post_enabled') == 'yes' ?  '<img src="' . SHIPVISTA__PLUGIN_URL . 'assets/img/check_on.png" style="height:15px;width:15px;"> <small class="sv_text-success">Active</small>' : '<img src="' . SHIPVISTA__PLUGIN_URL . 'assets/img/check_off.png" style="height:15px;width:15px;"> <small class="sv_text-grey">Pending</small>') ?>
+                                        <?php echo ($this->content['carrier'] == 'yes' ?  '<img src="' . SHIPVISTA__PLUGIN_URL . 'assets/img/check_on.png" style="height:15px;width:15px;"> <small class="sv_text-success">Active</small>' : '<img src="' . SHIPVISTA__PLUGIN_URL . 'assets/img/check_off.png" style="height:15px;width:15px;"> <small class="sv_text-grey">Pending</small>') ?>
                                     </div>
                                 </div>
                             </div>

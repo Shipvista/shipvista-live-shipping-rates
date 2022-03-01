@@ -264,6 +264,7 @@ function structureCartView() {
                             </div>
                             <div class="sv_flex-fill sv_border-right sv_align-self-center">
                                 ${labelView.outerHTML}
+
                             </div>
                             <div class="sv_align-self-center sv_pl-2">
                                 <b>
@@ -374,7 +375,6 @@ function inputErr(id, msg) {
 }
 
 var isMore = false;
-
 function shipvistaToggleViewMoreList() {
     var ell = document.getElementsByClassName('shipvista_list_hide');
     for (let index = 0; index < ell.length; index++) {
@@ -391,91 +391,5 @@ function shipvistaToggleViewMoreList() {
     }
 }
 
-
-var currentPage = '';
-
-function initDisplay() {
-    //re-do your jquery
-    setTimeout(() => {
-        try {
-			
-            isMissingAddress = false;
-            structureCartView();
-            document.getElementById('_shpvistaShippingList').getElementsByTagName('input')[shipvistaShippingSellected].checked = true;
-            shipvistaActiveOption(shipvistaShippingSellected);
-        } catch (e) {
-            console.log('Failed to load ell', e);
-        }
-    }, 500);
-    // 
-}
-
-jQuery(document).on('updated_checkout', function () {
-    initDisplay();
-});
-
-jQuery(document.body).on('updated_cart_totals', function () {
-    initDisplay();
-});
-
-function removeBtnEventListener(){
-	if(this.hasAttribute('href')){
-        this.remove();
-	}
-}
-
-var isEventSet = false;
-function checkStructureChanges(){
-var change = setInterval(()=>{
-		
-    var url = window.location.href;
-    var exp = url.split('/');
-    try {
-        currentPage = exp[3].toLowerCase();
-    } catch (e) {}
-
-    if (currentPage != 'checkout' || currentPage != 'cart') {
-        if (document.getElementsByClassName('cart_totals ') && document.getElementsByClassName('cart_totals ').length ) {
-            currentPage = 'cart';
-            // isMissingAddress = true;
-        } else {
-            currentPage = 'checkout';
-        }
-    }
-	
-	if(currentPage == 'cart' && !isEventSet ){
-	try{
-				var removeBtns = document.getElementsByClassName('remove');
-				for(var i = 0; i < removeBtns.length; i++){
-					const element = removeBtns[i];
-					element.addEventListener("click", removeBtnEventListener);
-				}
-		isEventSet = true;
-			} catch(e){}
-	}
-	
-	if(!document.getElementById("sv_calculateBtnToggle") ){
-		if(!document.getElementsByClassName('sv_list-group').length){
-			if(!document.getElementById("sv_loaderId") && document.getElementsByClassName('woocommerce-shipping-methods')[0]){
-				isEventSet = false;
-				var loader = document.createElement('div');
-				loader.innerHTML = loaderContainer;
-				loader.setAttribute('id', "sv_loaderId");
-				document.getElementsByClassName('woocommerce-shipping-methods')[0].append(loader);
-		    }
-			setTimeout(() => {
-			if(document.getElementById("sv_loaderId")){
-				document.getElementById("sv_loaderId").remove();
-			}
-			structureCartView();
-			}, 1500);
-		} else {
-			
-	}
-	}
-}, 500);
-}
-structureCartView();
-checkStructureChanges();
 
 // GET USER LOCATION
