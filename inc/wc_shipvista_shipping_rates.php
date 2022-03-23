@@ -155,16 +155,29 @@ trait SLSR_WcShipvistaRates
             $weight = $_product->get_weight() ?: ($this->get_option('shipvista_dimension_weight') > 0 ?  $this->get_option('shipvista_dimension_weight') :  1);
             $weight *= $quantity;
 
+            
+            if ($length > 25) {
+                $length = 25;
+            }
+
+            if ($width > 25) {
+                $width = 25;
+            }
+
+            if ($height > 25) {
+                $height = 25;
+            }
+            
             // set weight max to 30kg
             if ($weight > 30) {
                 $weight = $this->get_option('shipvista_dimension_weight') ?: 1;
             }
 
             $shippingList[] = [
-                'length' => (float) $length,
-                'width' => (float) $width,
-                'height' => (float) $height,
-                'weight' => (float) $weight,
+                'length' => (round($length) ?: 1),
+                'width' => (round($width) ?: 1),
+                'height' => (round($height) ?: 1),
+                'weight' => (float) ($weight),
                 'declaredValue' => [
                     'currency' => $this->get_option('shipvista_user_currency'),
                     'amount' => ($price * $quantity ?: 0)
@@ -189,7 +202,7 @@ trait SLSR_WcShipvistaRates
 
     function structureRestrictions(string $country_code)
     {
-        $restrictions = strtoupper(str_replace(' ', '', preg_Replace('#[^a-zA-Z0-9\,\:\|]#i', '', $this->get_option('shipvista_restricted_locations'))));
+        $restrictions = strtoupper(str_replace(' ', '', preg_Replace('#[^a-zA-Z0-9\,\:\|]#i', '', $this->get_option('_restricted_locations'))));
         if (strlen($restrictions) > 0) {
             $countryExp = explode('|', $restrictions);
             foreach ($countryExp as $countryEl) {
@@ -207,7 +220,7 @@ trait SLSR_WcShipvistaRates
     }
 
 
-    public function mergeActiveRates( array &$rates )
+    public function mergeActiveRates(array &$rates)
     {
         $rate = [];
         foreach ($rates as $key => $value) {
@@ -281,12 +294,12 @@ trait SLSR_WcShipvistaRates
                 $activeShippingRates = $this->getActiveCarrierMethods();
                 $this->SLSR_pluginLogs('carriers_rates_raw', json_encode($activeShippingRates));
                 $activeCarriers = array_keys($activeShippingRates);
-                
+
                 $this->structCarriers($activeCarriers);
                 $this->SLSR_pluginLogs('carriers', json_encode($activeCarriers));
                 $this->SLSR_pluginLogs('carriers_rates', json_encode($activeShippingRates));
                 $this->SLSR_pluginLogs('carriers_rates_all', json_encode($rates));
-                
+
                 $labelList = [];
                 foreach ($rates as $rate) {
                     $this->SLSR_pluginLogs('carriers_rates_list', json_encode($rate));
@@ -306,7 +319,7 @@ trait SLSR_WcShipvistaRates
                         foreach ($activeShippingRates as  $service) {
                             // count the service rates
                             $lowerService = array_map('strtolower', array_map('trim', $service));
-                            $this->SLSR_pluginLogs('carriers_rates_options', in_array(strtolower($serviceName), array_map('strtolower', array_map('trim', $service))) .' || '.strtolower($serviceName) .' == ' . json_encode($lowerService));
+                            $this->SLSR_pluginLogs('carriers_rates_options', in_array(strtolower($serviceName), array_map('strtolower', array_map('trim', $service))) . ' || ' . strtolower($serviceName) . ' == ' . json_encode($lowerService));
 
                             if (in_array(strtolower($serviceName), array_map('strtolower', array_map('trim', $service)))) {
                                 if (in_array($serviceName, $labelList)) {
@@ -398,7 +411,7 @@ trait SLSR_WcShipvistaRates
             if ($key == 0) {
                 $winners = ['cheapest' => $key, 'fastest' => $key];
                 $price = $rate['cost'];
-                $transit = $rate['transit'];
+                $transit = isset($rate['transit']) ? $rate['transit'] : '';
             } else {
                 $winnerList = array_values($winners);
                 // get cheapest
@@ -407,9 +420,9 @@ trait SLSR_WcShipvistaRates
                     $price = $rate['cost'];
                 }
 
-                if ($rate['transit'] <= $transit  && !in_array($key, $winnerList)) {
+                if (isset($rate['transit']) && $rate['transit'] <= $transit  && !in_array($key, $winnerList)) {
                     $winners['fastest'] = $key;
-                    $transit = $rate['transit'];
+                    $transit = isset($rate['transit']) ? $rate['transit'] : '';
                 }
             }
         }
@@ -430,22 +443,22 @@ trait SLSR_WcShipvistaRates
                 if ($rate['cost'] < $price) {
                     $winners['recommended'] = $key;
                     $price = $rate['cost'];
-                    $transit = $rate['transit'];
+                    $transit = isset($rate['transit']) ? $rate['transit'] : '';
                 }
                 // get cheapest
             }
         }
 
 
-        $rates[$winners['fastest']]['meta_data']['attribute'] = 'Fastest';// .  $rates[$winners['fastest']]['label'] . ($rates[$winners['fastest']]['transit'] >= 1 ?  ' - ' . $rates[$winners['fastest']]['transit'] . ' day' . ($rates[$winners['fastest']]['transit'] > 1 ? 's' : '') : '');
+        $rates[$winners['fastest']]['meta_data']['attribute'] = 'Fastest'; // .  $rates[$winners['fastest']]['label'] . ($rates[$winners['fastest']]['transit'] >= 1 ?  ' - ' . $rates[$winners['fastest']]['transit'] . ' day' . ($rates[$winners['fastest']]['transit'] > 1 ? 's' : '') : '');
         // $rates[$winners['fastest']]['label'] = 'Fastest:  ' .  $rates[$winners['fastest']]['label'] . ($rates[$winners['fastest']]['transit'] >= 1 ?  ' - ' . $rates[$winners['fastest']]['transit'] . ' day' . ($rates[$winners['fastest']]['transit'] > 1 ? 's' : '') : '');
         if ($winners['fastest'] != $winners['cheapest']) {
             // $rates[$winners['cheapest']]['label'] = 'Cheapest: ' . $rates[$winners['cheapest']]['label'] . ($rates[$winners['cheapest']]['transit'] >= 1 ?  ' - '  . $rates[$winners['cheapest']]['transit'] . ' day' . ($rates[$winners['cheapest']]['transit'] > 1 ? 's' : '') : '');
-            $rates[$winners['cheapest']]['meta_data']['attribute'] = 'Cheapest';// . $rates[$winners['cheapest']]['label'] . ($rates[$winners['cheapest']]['transit'] >= 1 ?  ' - '  . $rates[$winners['cheapest']]['transit'] . ' day' . ($rates[$winners['cheapest']]['transit'] > 1 ? 's' : '') : '');
+            $rates[$winners['cheapest']]['meta_data']['attribute'] = 'Cheapest'; // . $rates[$winners['cheapest']]['label'] . ($rates[$winners['cheapest']]['transit'] >= 1 ?  ' - '  . $rates[$winners['cheapest']]['transit'] . ' day' . ($rates[$winners['cheapest']]['transit'] > 1 ? 's' : '') : '');
         }
         if (count($rates) > 2) {
             // $rates[$winners['recommended']]['label'] = 'Recommended:  ' .  $rates[$winners['recommended']]['label'] . ($rates[$winners['recommended']]['transit'] >= 1 ?  ' -  '  . $rates[$winners['recommended']]['transit'] . ' day' . ($rates[$winners['recommended']]['transit'] > 1 ? 's' : '') : '');
-            $rates[$winners['recommended']]['meta_data']['attribute'] = 'Recommended';// .  $rates[$winners['recommended']]['label'] . ($rates[$winners['recommended']]['transit'] >= 1 ?  ' -  '  . $rates[$winners['recommended']]['transit'] . ' day' . ($rates[$winners['recommended']]['transit'] > 1 ? 's' : '') : '');
+            $rates[$winners['recommended']]['meta_data']['attribute'] = 'Recommended'; // .  $rates[$winners['recommended']]['label'] . ($rates[$winners['recommended']]['transit'] >= 1 ?  ' -  '  . $rates[$winners['recommended']]['transit'] . ' day' . ($rates[$winners['recommended']]['transit'] > 1 ? 's' : '') : '');
             if ($winners['recommended'] !== '') {
                 $newArr[] = $rates[$winners['recommended']];
             }

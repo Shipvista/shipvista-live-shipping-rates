@@ -88,7 +88,7 @@ trait SLSR_WcShipvistaFunctions
       return [
         'postalCode' =>  str_replace(' ', '', $postcode),
         'countryCode' => strtoupper($country),
-        'state' => $state,
+        'stateCode' => $state,
         'city' => $city,
         'streetAddress' => $address,
         'streetAddress2' => $address_2,
@@ -105,7 +105,7 @@ trait SLSR_WcShipvistaFunctions
       $result = [
         'postalCode' => str_replace(' ', '', $order->get_shipping_postcode()),
         'countryCode' => $order->get_shipping_country(),
-        'state' => $order->get_shipping_state(),
+        'stateCode' => $order->get_shipping_state(),
         'city' => $order->get_shipping_city(),
         'streetAddress' => $order->get_shipping_address_1(),
         'streetAddress2' => $order->get_shipping_address_2(),
@@ -328,7 +328,7 @@ trait SLSR_WcShipvistaFunctions
       $totaltems = count($this->shippingList['list']);
       $shippingPrice *= $totaltems;
     }
-    $title = 'Flat Rate';
+    $title = 'Flat Rate'; 
     $rateList = [];
     if ($missingAddress != false) {
       $title = 'Address: Enter a valid postal code to get shipping cost.';

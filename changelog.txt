@@ -1,7 +1,8 @@
 == Changelog ==
 
-= 1.0.0 =
-* Initial release.
+= 2.0.1 =
+* Fixed missing rates for Canda Post
+* Fixed UPS missing State code bug
 
 = 2.0.0 =
 * Add UPS shipping rates
@@ -9,4 +10,8 @@
 * Fixed shipping card design
 * Added log option
 * Added ability to use your personal carrier accounts to obtain rates.
-* Remove front end management with JS 
+* Remove front end management with JS
+* Change log update 
+
+= 1.0.0 =
+* Initial release.

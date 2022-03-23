@@ -6,12 +6,12 @@
  * Description: Display live shipping rates to customers on cart/checkout pages, print labels, and track orders with Shipvista's free live shipping rates plugin. Fully customizable to suit your every shipping needs. 
  * Author:  Shipvista
  * Author URI: http://www.shipvista.com
- * Version: 2.0.0
+ * Version: 2.0.1
  * Tags: shipping, delivery, logistics, woocomemrce, free shipping, live rates, canada post, shipvista
  * Requires at least: 5.0
  * Tested up to: 5.9
  * Stable tag: 2.0.0
- * Requires PHP: 5.4.0
+ * Requires PHP: 7.2.0
  * License: GPLv3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * woo:
@@ -126,27 +126,29 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
           if ($this->enabled == 'yes') {
             // include get available shipping rates
-            $rateList = $this->getShippingRates($package);
-            $this->rateList = $rateList;
-            // include get available shipping rates
-            foreach ($rateList as $rateObject) {
-              // $rateObject['meta_data'] = ['tosam' => 'Yes', 'How' => 'Yes'];
-              unset($rateObject['rate']);
-              unset($rateObject['free']);
-              unset($rateObject['transit']);
-              unset($rateObject['realRate']);
-              $this->SLSR_pluginLogs('rateList_new', json_encode($rateObject));
-              $this->add_rate($rateObject);
-            }
+            if (isset($package['items']) && count($package['items']) > 0) {
+              $rateList = $this->getShippingRates($package);
+              $this->rateList = $rateList;
+              // include get available shipping rates
+              foreach ($rateList as $rateObject) {
+                // $rateObject['meta_data'] = ['tosam' => 'Yes', 'How' => 'Yes'];
+                unset($rateObject['rate']);
+                unset($rateObject['free']);
+                unset($rateObject['transit']);
+                unset($rateObject['realRate']);
+                $this->SLSR_pluginLogs('rateList_new', json_encode($rateObject));
+                $this->add_rate($rateObject);
+              }
 
-            global $post;
-            global $wp;
-            // get the post type
-            if (is_object($post) && $post->post_type == 'page') {
-              if ($post->post_name == 'checkout' && !isset($wp->query_vars['order-pay'])) {
-                if (count($rateList) < 2) {
-                  wc_add_notice('Enter a valid shipping postal code to proceed', 'error');
-                  return false;
+              global $post;
+              global $wp;
+              // get the post type
+              if (is_object($post) && $post->post_type == 'page') {
+                if ($post->post_name == 'checkout' && !isset($wp->query_vars['order-pay'])) {
+                  if (count($rateList) < 2) {
+                    wc_add_notice('Enter a valid shipping postal code to proceed', 'error');
+                    return false;
+                  }
                 }
               }
             }
@@ -283,7 +285,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
           }
 
           $result = $Shipvista->shipvistaApi('/Shipments', $requestobject, 'POST');
-          
+
           // send email to customer that their label has been printed successfully
           if ($result['status'] == true && isset($result['data'])) {
             $data = $result['data'];
@@ -742,10 +744,10 @@ function woo_adon_plugin_template($template, $template_name, $template_path)
 {
   global $woocommerce;
   $_template = $template;
-  if (!$template_path){
+  if (!$template_path) {
     $template_path = $woocommerce->template_url;
   }
-  
+
   $plugin_path  = untrailingslashit(plugin_dir_path(__FILE__))  . '/templates/woocommerce/';
   // die(var_dump($template_name, $template_path, $template, $plugin_path));
 
@@ -757,11 +759,11 @@ function woo_adon_plugin_template($template, $template_name, $template_path)
     )
   );
 
-  if (file_exists($plugin_path . $template_name)){
+  if (file_exists($plugin_path . $template_name)) {
     $template = $plugin_path . $template_name;
   }
 
-  if (!$template){
+  if (!$template) {
     $template = $_template;
   }
 
